@@ -1,0 +1,375 @@
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+  .banner_home {
+    position: absolute;
+    width: 90%;
+    height: 20%;
+    left: 50px;
+    right: auto;
+    top: 116px;
+  }
+
+  /* ============= First Line Form Booking =============*/
+  .title_form {
+    /* Pilih Jadwal Penerbangan spesial di Tiketku! */
+    position: absolute;
+    right: 1px;
+    left: 25px;
+    width: 459px;
+    height: 30px;
+
+    /* Heading/20/Bold */
+
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 30px;
+    /* identical to box height, or 150% */
+
+    color: #000000;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  .nama_user {
+    color: #7126b5;
+  }
+
+  .content_form {
+    position: absolute;
+    left: 30px;
+    top: 60px;
+    font-family: "CustomFont";
+  }
+
+  .frame_booking {
+    box-sizing: border-box;
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 0px;
+    gap: 10px;
+
+    position: absolute;
+    width: 500px;
+    height: 430px;
+    left: 120px;
+    top: 220px;
+
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    /* Shadow/High */
+
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+  }
+
+  .landing_icon {
+    margin-left: 20px;
+  }
+
+  /* Passenger */
+  .passenger_icon {
+    position: absolute;
+    top: 115px;
+  }
+
+  .passenger_wrap {
+    position: absolute;
+    left: 10px;
+    top: 100px;
+  }
+
+  /* Seat Class */
+  .seat_class_icon {
+    position: relative;
+    top: -10px;
+    left: 120px;
+  }
+
+  .seat_class_box {
+    position: absolute;
+    top: -5px;
+    left: 135px;
+    min-width: 250px;
+  }
+
+  /* Tanggal */
+  .date_icon {
+    margin-right: 10px;
+    position: absolute;
+    left: -5px;
+    top: 200px;
+  }
+
+  .button_departure {
+    position: absolute;
+    top: 200px;
+    left: 40px;
+  }
+
+  .button_switch {
+    position: absolute;
+    top: 150px;
+    left: -10px;
+  }
+
+  .button_return {
+    position: relative;
+    left: 0px;
+    top: 160px;
+  }
+
+  .button_search_booking {
+    position: relative;
+    left: 140px;
+    top: 110px;
+  }
+
+  /* ============= Last Line Form Booking =============*/
+
+  /* ============= First Line Destinasi Favorit =============*/
+
+  .title_destinasi {
+    position: absolute;
+    width: 139px;
+    height: 24px;
+    left: 90px;
+    top: 660px;
+
+    /* Title/16/Bold */
+
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+
+    color: #000000;
+  }
+
+  .icon_masuk {
+    margin-left: -20px;
+    margin-top: -5px;
+  }
+  .kategori {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 16px;
+
+    position: absolute;
+    width: 317px;
+    height: 48px;
+    left: 40px;
+    right: auto;
+    top: 692px;
+  }
+
+  .text-masuk {
+    font-size: 10px;
+    margin-top: -5px;
+    margin-left: -10px;
+  }
+
+  .button_kategori {
+    /* Frame 1 */
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 14px 24px;
+    gap: 8px;
+
+    width: 70px;
+    height: 35px;
+
+    /* Primary/Purple/04
+
+7126B5
+*/
+    background: #7126b5;
+    border-radius: 12px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  .img_kategori {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .card-destination {
+    position: absolute;
+    top: 742px;
+    left: 30px;
+    width: 166.94px;
+    height: 194px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  .card-kategori {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 0px;
+    top: 0px;
+
+    /* Neutral/01
+
+FFFFFF
+*/
+    background: #ffffff;
+    /* Shadow/Low */
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .card-kategori2 {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 140px;
+    top: 0px;
+
+    background: #ffffff;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .card-kategori3 {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 280px;
+    top: 0px;
+
+    background: #ffffff;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .card-kategori4 {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 420px;
+    top: 0px;
+
+    background: #ffffff;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .card-kategori5 {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 560px;
+    top: 0px;
+
+    background: #ffffff;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  .destination {
+    /* Body/12/Medium */
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 9px;
+    line-height: 18px;
+    /* or 150% */
+
+    /* Neutral/05 */
+    color: #151515;
+  }
+
+  .airline {
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+    /* identical to box height, or 140% */
+
+    color: #7126b5;
+  }
+
+  .date {
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 8px;
+    line-height: 20px;
+
+    /* identical to box height, or 200% */
+
+    /* Neutral/05 */
+
+    color: #151515;
+  }
+
+  .price {
+    font-family: "CustomFont";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 20px;
+    /* identical to box height, or 167% */
+
+    /* Neutral/05 */
+
+    color: #151515;
+  }
+
+  /* ============= Last Line Destinasi Favorit =============*/
+
+  .footer {
+    position: absolute;
+    top: 1010px;
+    width: 1440px;
+    left: 0px;
+    right: 0px;
+  }
+
+  .modal_date {
+    position: "absolute";
+    top: "50%";
+    left: "50%";
+    transform: "translate(-50%, -50%)";
+    width: 400;
+    background-color: "background.paper";
+    border: "2px solid #000";
+    box-shadow: 24;
+  }
+}

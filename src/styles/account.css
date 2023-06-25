@@ -1,0 +1,24 @@
+.back-button {
+    background-color: #A06ECE;
+    border: none;
+}
+
+.personal-info {
+    background-color: #A06ECE;
+    border: none;
+    color: white;
+}
+
+.form {
+    color: #4B1979;
+}
+
+.save-button {
+    background-color: #4B1979;
+    border-radius: 12px;
+    border: none;
+}
+
+.link-style{
+    color: #7126B5;
+}

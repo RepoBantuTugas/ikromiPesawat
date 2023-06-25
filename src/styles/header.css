@@ -1,0 +1,93 @@
+@font-face {
+  font-family: "CustomFont";
+  src: url(./CustomFont/Poppins-Light.ttf);
+}
+
+.customText {
+  font-family: "CustomFont", sans-serif;
+}
+
+.logo {
+  position: absolute;
+  width: 98px;
+  height: 53px;
+  left: 128px;
+  top: 6px;
+}
+
+.custom-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 16px;
+
+  position: absolute;
+  width: 444px;
+  height: 48px;
+  left: 260px;
+
+  background: #eeeeee;
+  border-radius: 16px;
+}
+
+.button-masuk {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 14px 16px;
+  gap: 8px;
+
+  width: 105px;
+  height: 48px;
+
+  /* Primary/Purple/04
+
+7126B5
+*/
+  background: #7126b5;
+  border-radius: 12px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.text-masuk {
+  width: 45px;
+  height: 20px;
+
+  /* Body/14/Regular */
+
+  font-family: "CustomFont", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height, or 143% */
+
+  /* Neutral/01 */
+
+  color: #ffffff;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.icon_masuk {
+  width: 20px;
+  height: 20px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
