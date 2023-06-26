@@ -36,7 +36,7 @@ const Account = () => {
   };
   useEffect(() => {
     axios
-      .get("https://tiketku-api-development.up.railway.app/user/getDetail", {
+      .get("https://tiketku-development.up.railway.app/user/getDetail", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -66,7 +66,7 @@ const Account = () => {
     console.log(user);
     axios
       .put(
-        "https://tiketku-api-development.up.railway.app/user/updateProfile",
+        "https://tiketku-development.up.railway.app/user/updateProfile",
         user,
         {
           headers: {

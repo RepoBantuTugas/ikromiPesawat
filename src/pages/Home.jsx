@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import HeaderLogin from "../components/HeaderLogin";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { Card, Nav } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 // import mui library
 import InputLabel from "@mui/material/InputLabel";
@@ -49,9 +49,10 @@ import "../styles/Responsive/styleMobile.css";
 import ModalPassenger from "../components/search-booking/ModalPassenger";
 
 import axios from "axios";
-
+import CardFavDestination from "../components/CardFavDestination";
 
 function Home(props) {
+  const nav = useNavigate();
   // First line HeaderLogin
   console.log(props, "propsku");
   const [tokentoHome, setTokentoHome] = useState(
@@ -70,7 +71,7 @@ function Home(props) {
 
   useEffect(() => {
     axios
-      .get("https://tiketku-api-development.up.railway.app/user/getDetail", {
+      .get("https://tiketku-development.up.railway.app/user/getDetail", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -83,13 +84,14 @@ function Home(props) {
         console.error(error);
       });
   }, []);
+  // Last Line Get User Detail
 
-  // First Fetch airport
+  // First Line Fetch airport
   const [airport, setAirport] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://tiketku-api-development.up.railway.app/airport")
+      .get("https://tiketku-development.up.railway.app/airport")
       .then((response) => {
         setAirport(response.data.data);
       })
@@ -101,20 +103,20 @@ function Home(props) {
   useEffect(() => {
     console.log(airport);
   }, [airport]);
-  // Last Fetch airport
+  // Last Line Fetch airport
 
   // First Passenger
   const [adults, setAdults] = useState(0);
   const [kids, setKids] = useState(0);
   const [infants, setInfants] = useState(0);
   const [isDivVisible, setDivVisible] = useState(false);
-  const nav = useNavigate()
+
   const handleDivClick = () => {
     setDivVisible(!isDivVisible);
   };
   // Last Passenger
 
-  // First Modal Date Departure & Return
+  // First Line Modal Date Departure & Return
   const [datedep, setDatedep] = useState();
   const [dateret, setDateret] = useState();
 
@@ -133,55 +135,83 @@ function Home(props) {
   const handleDateSelectRet = (date) => {
     setDateret(date);
   };
-  // Last Modal Date Departure & Return
+  // Last Line Modal Date Departure & Return
 
-  // First Button Switch return
+  // First Line Button Switch return
   const [checked, setChecked] = useState(false);
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-  // Last Button Switch return
+  // Last Line Button Switch return
+
+  // First Line Search Flight
+
   const [selectedValue, setSelectedValue] = useState();
   const [selectedValueCityFrom, setSelectedValueCityFrom] = useState();
   const [selectedValueCityTo, setSelectedValueCityTo] = useState();
-  const handleMenuItemClick = (event) => {
-    const { value } = event.target;
+  const handleMenuItemClick = (e) => {
+    const { value } = e.target;
     setSelectedValue(value);
   };
-  const handleMenuItemClickCityFrom = (event) => {
-    const { value } = event.target;
+
+  const handleMenuItemClickCityFrom = (e) => {
+    const { value } = e.target;
     setSelectedValueCityFrom(value);
   };
-  const handleMenuItemClickCityTo = (event) => {
-    const { value } = event.target;
+
+  const handleMenuItemClickCityTo = (e) => {
+    const { value } = e.target;
     setSelectedValueCityTo(value);
   };
-  const handleSearchFlight = (e) =>{
-    console.log(dataPost)
+
+  const handleSearchFlight = (e) => {
+    console.log(dataPost);
     e.preventDefault();
     axios
-      .post("https://tiketku-development.up.railway.app/flight/search", dataPost)
+      .post(
+        "https://tiketku-development.up.railway.app/flight/search",
+        dataPost
+      )
       .then((response) => {
-        // Handle successful registration
-        // console.log(response.data.data.flights);
-        nav("/search_result",{ state: response.data.data.flights })
+        // Handle Successful Registration
+        nav("/search_result", { state: response.data.data.flights });
       })
       .catch((error) => {
-        // Handle error
-        // alert("Password Salah / Email Belum Terdaftar !");
-        console.log(error)
+        // Handle Error
+        console.log(error);
       });
-  }
-  let dataPost = {
-    date : datedep,
-    adult : adults,
-    child : kids,
-    infant: infants,
-    seat_class :selectedValue,
-    arrival_airport_city: selectedValueCityTo,
-    departure_airport_city:  selectedValueCityFrom
+  };
 
-  }
+  let dataPost = {
+    date: datedep,
+    adult: adults,
+    child: kids,
+    infant: infants,
+    seat_class: selectedValue,
+    arrival_airport_city: selectedValueCityTo,
+    departure_airport_city: selectedValueCityFrom,
+  };
+
+  // Last Line Search Flight
+
+  //  First Line Fav Destination
+  const [favDestination, setFavDestination] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://tiketku-development.up.railway.app/airport/favorite")
+      .then((response) => {
+        setFavDestination(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(favDestination, "destinasiii");
+  }, [favDestination]);
+  //  Last Line Fav Destination
+
   return (
     <>
       {tokentoHome === undefined || tokentoHome === null ? (
@@ -207,302 +237,307 @@ function Home(props) {
                 </h6>
               </div>
               <form onSubmit={handleSearchFlight}>
-              <div className="content_form">
-                {/* tambah flex biar rapi */}
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <img
-                    className="takeoff_icon"
-                    src={takeoff_icon}
-                    alt="Takeoff Icon"
-                  />
-                  <FormControl sx={{ m: 1, minWidth: 150 }}>
-                    <InputLabel id="from-select-label-id">From</InputLabel>
-                    <Select
-                      labelId="from-select-label"
-                      id="from-select"
-                      // value={age}
-                      label="From"
-                      // onChange={handleChange}
-                      value={selectedValueCityFrom} onChange={handleMenuItemClickCityFrom}
-                    >
-                      {airport.map((item) => (
-                        <MenuItem value={item.city}>
-                          {item.city} - {item.airport_iata}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>Dari mana anda?</FormHelperText>
-                  </FormControl>
-
-                  <CachedIcon sx={{ fontSize: 32, marginLeft: 5 }} />
-
-                  <img
-                    className="landing_icon"
-                    src={landing_icon}
-                    alt="Landing Icon"
-                  />
-
-                  <FormControl sx={{ m: 1, minWidth: 150 }}>
-                    <InputLabel id="to-select-label-id">To</InputLabel>
-                    <Select
-                      labelId="to-select-label"
-                      id="to-select"
-                      // value={age}
-                      label="To"
-                      // onChange={handleChange}
-                      value={selectedValueCityTo} onChange={handleMenuItemClickCityTo}
-                    >
-                      {airport.map((item) => (
-                        <MenuItem value={item.city}>
-                          {item.city} - {item.airport_iata}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>Mau kemana anda?</FormHelperText>
-                  </FormControl>
-
-                  <img
-                    className="passenger_icon"
-                    src={passenger_icon}
-                    alt="Passenger Icon"
-                  />
-                  {/* First Line Passenger */}
-                  <div
-                    className="passenger_wrap"
-                    style={{
-                      alignSelf: "start",
-                      marginTop: "8px",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div
-                      onClick={handleDivClick}
-                      style={{
-                        maxWidth: "250px",
-                        height: "fit-content",
-
-                        marginLeft: "20px",
-                      }}
-                      sx={{ m: 1, minWidth: 300 }}
-                    >
-                      <div
-                        style={{
-                          borderBottom: "1px solid blue",
-                        }}
-                      >
-                        <p>
-                          {adults} Dewasa, {kids} Anak, {infants} Bayi
-                        </p>
-                      </div>
-
-                      <FormHelperText>Berapa Penumpang?</FormHelperText>
-                    </div>
-                    {isDivVisible && (
-                      <div
-                        style={{
-                          backgroundColor: "white",
-                          marginLeft: "15px",
-                          position: "absolute",
-                          top: "65px",
-                          zIndex: "9999",
-                        }}
-                      >
-                        <form>
-                          <label>Adult</label>
-                          <div
-                            className="counter"
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Button
-                              onClick={() => {
-                                setAdults(adults + 1);
-                              }}
-                              variant="success"
-                            >
-                              +
-                            </Button>{" "}
-                            <input
-                              value={adults}
-                              style={{
-                                height: "30px",
-                                margin: "3px",
-                                textAlign: "center",
-                                fontSize: "20px",
-                                width: "60px",
-                              }}
-                              type="text"
-                            />
-                            <Button
-                              onClick={() => {
-                                setAdults(adults - 1);
-                              }}
-                              variant="success"
-                            >
-                              -
-                            </Button>{" "}
-                          </div>
-                          <label>Kid</label>
-                          <div
-                            className="counter"
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Button
-                              onClick={() => {
-                                setKids(kids + 1);
-                              }}
-                              variant="success"
-                            >
-                              +
-                            </Button>{" "}
-                            <input
-                              value={kids}
-                              style={{
-                                height: "30px",
-                                margin: "3px",
-                                textAlign: "center",
-                                fontSize: "20px",
-                                width: "60px",
-                              }}
-                              type="text"
-                            />
-                            <Button
-                              onClick={() => {
-                                setKids(kids - 1);
-                              }}
-                              variant="success"
-                            >
-                              -
-                            </Button>{" "}
-                          </div>
-                          <label>Infant</label>
-                          <div
-                            className="counter"
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Button
-                              onClick={() => {
-                                setInfants(infants + 1);
-                              }}
-                              variant="success"
-                            >
-                              +
-                            </Button>{" "}
-                            <input
-                              value={infants}
-                              style={{
-                                height: "30px",
-                                margin: "3px",
-                                textAlign: "center",
-                                fontSize: "20px",
-                                width: "60px",
-                              }}
-                              type="text"
-                            />
-                            <Button
-                              onClick={() => {
-                                setInfants(infants - 1);
-                              }}
-                              variant="success"
-                            >
-                              -
-                            </Button>{" "}
-                          </div>
-                          <button onClick={handleDivClick}>Submit</button>
-                        </form>
-                      </div>
-                    )}
-                  </div>
-                  {/* last Line Passenger */}
-                </div>
-
-                <div>
-                  <img className="date_icon" src={date_icon} alt="Date Icon" />
-                  {/* First Line Modal Departure */}
-                  <Button
-                    onClick={handleOpenDeparture}
-                    className="button_departure"
-                  >
-                    Departure : {datedep}
-                  </Button>
-                  <ModalDeparture
-                    show={showDeparture}
-                    onClose={handleCloseDeparture}
-                    onSelectDate={handleDateSelectDep}
-                  />
-
-                  {/* Last Line Modal Departure */}
-
-                  {/* Switch untuk mengaktifkan return */}
-                  <Switch
-                    checked={checked}
-                    onChange={handleChange}
-                    size="small"
-                    className="button_switch"
-                  />
-
-                  {/* First Line Modal Return */}
-                  <Button
-                    onClick={handleOpenReturn}
-                    disabled={!checked}
-                    className="button_return"
-                  >
-                    Return : {dateret}
-                  </Button>
-                  <ModalReturn
-                    show={showReturn}
-                    onClose={handleCloseReturn}
-                    onSelectDate={handleDateSelectRet}
-                  />
-                  {/* Last Line Modal Return */}
-
-                  <span className="span_seat_class">
+                <div className="content_form">
+                  {/* tambah flex biar rapi */}
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
                     <img
-                      className="seat_class_icon"
-                      src={seat_class}
-                      alt="Seat Class Icon"
+                      className="takeoff_icon"
+                      src={takeoff_icon}
+                      alt="Takeoff Icon"
+                    />
+                    <FormControl sx={{ m: 1, minWidth: 150 }}>
+                      <InputLabel id="from-select-label-id">From</InputLabel>
+                      <Select
+                        labelId="from-select-label"
+                        id="from-select"
+                        label="From"
+                        value={selectedValueCityFrom}
+                        onChange={handleMenuItemClickCityFrom}
+                      >
+                        {airport.map((item) => (
+                          <MenuItem value={item.city}>
+                            {item.city} - {item.airport_iata}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText>Dari mana anda?</FormHelperText>
+                    </FormControl>
+
+                    <CachedIcon sx={{ fontSize: 32, marginLeft: 5 }} />
+
+                    <img
+                      className="landing_icon"
+                      src={landing_icon}
+                      alt="Landing Icon"
                     />
 
-                    <FormControl sx={{ m: 1 }} className="seat_class_box">
-                      <InputLabel id="return-select-label-id">
-                        Seat Class
-                      </InputLabel>
+                    <FormControl sx={{ m: 1, minWidth: 150 }}>
+                      <InputLabel id="to-select-label-id">To</InputLabel>
                       <Select
-                        labelId="return-select-label"
-                        id="return-select"
-                        // value={age}
-                        label="Seat Class"
-                        // onChange={handleChange}
-                        value={selectedValue} onChange={handleMenuItemClick}
+                        labelId="to-select-label"
+                        id="to-select"
+                        label="To"
+                        value={selectedValueCityTo}
+                        onChange={handleMenuItemClickCityTo}
                       >
-                        <MenuItem value={"ECONOMY"}>Economy</MenuItem>
-                        <MenuItem value={"PREMIUM ECONOMY"}>
-                          Premium Economy
-                        </MenuItem>
-                        <MenuItem value={"BUSINESS"}>Business</MenuItem>
-                        <MenuItem value={"FIRST CLASS"}>First Class</MenuItem>
+                        {airport.map((item) => (
+                          <MenuItem value={item.city}>
+                            {item.city} - {item.airport_iata}
+                          </MenuItem>
+                        ))}
                       </Select>
-                      <FormHelperText>Kelas Penerbangan</FormHelperText>
+                      <FormHelperText>Mau kemana anda?</FormHelperText>
                     </FormControl>
-                  </span>
-                  <div className="container_search">
-                    {/* <Link to={"/search_result"}>
-                      
-                    </Link> */}
-                    <ButtonMui
-                        variant="contained"
-                        type="submit"
-                        size="large"
-                        sx={{ m: 2, minWidth: 30 }}
-                        className="button_search_booking"
+
+                    <img
+                      className="passenger_icon"
+                      src={passenger_icon}
+                      alt="Passenger Icon"
+                    />
+                    {/* First Line Passenger */}
+                    <div
+                      className="passenger_wrap"
+                      style={{
+                        alignSelf: "start",
+                        marginTop: "8px",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <div
+                        onClick={handleDivClick}
+                        style={{
+                          maxWidth: "250px",
+                          height: "fit-content",
+
+                          marginLeft: "20px",
+                        }}
+                        sx={{ m: 1, minWidth: 300 }}
                       >
-                        CARI PENERBANGAN
-                      </ButtonMui>
+                        <div
+                          style={{
+                            borderBottom: "1px solid blue",
+                          }}
+                        >
+                          <p>
+                            {adults} Dewasa, {kids} Anak, {infants} Bayi
+                          </p>
+                        </div>
+
+                        <FormHelperText>Berapa Penumpang?</FormHelperText>
+                      </div>
+                      {isDivVisible && (
+                        <div
+                          style={{
+                            backgroundColor: "white",
+                            marginLeft: "15px",
+                            position: "absolute",
+                            top: "65px",
+                            zIndex: "9999",
+                          }}
+                        >
+                          <form>
+                            <label>Adult</label>
+                            <div
+                              className="counter"
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Button
+                                onClick={() => {
+                                  setAdults(adults + 1);
+                                }}
+                                variant="success"
+                              >
+                                +
+                              </Button>{" "}
+                              <input
+                                value={adults}
+                                style={{
+                                  height: "30px",
+                                  margin: "3px",
+                                  textAlign: "center",
+                                  fontSize: "20px",
+                                  width: "60px",
+                                }}
+                                type="text"
+                              />
+                              <Button
+                                onClick={() => {
+                                  setAdults(adults - 1);
+                                }}
+                                variant="success"
+                              >
+                                -
+                              </Button>{" "}
+                            </div>
+                            <label>Kid</label>
+                            <div
+                              className="counter"
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Button
+                                onClick={() => {
+                                  setKids(kids + 1);
+                                }}
+                                variant="success"
+                              >
+                                +
+                              </Button>{" "}
+                              <input
+                                value={kids}
+                                style={{
+                                  height: "30px",
+                                  margin: "3px",
+                                  textAlign: "center",
+                                  fontSize: "20px",
+                                  width: "60px",
+                                }}
+                                type="text"
+                              />
+                              <Button
+                                onClick={() => {
+                                  setKids(kids - 1);
+                                }}
+                                variant="success"
+                              >
+                                -
+                              </Button>{" "}
+                            </div>
+                            <label>Infant</label>
+                            <div
+                              className="counter"
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Button
+                                onClick={() => {
+                                  setInfants(infants + 1);
+                                }}
+                                variant="success"
+                              >
+                                +
+                              </Button>{" "}
+                              <input
+                                value={infants}
+                                style={{
+                                  height: "30px",
+                                  margin: "3px",
+                                  textAlign: "center",
+                                  fontSize: "20px",
+                                  width: "60px",
+                                }}
+                                type="text"
+                              />
+                              <Button
+                                onClick={() => {
+                                  setInfants(infants - 1);
+                                }}
+                                variant="success"
+                              >
+                                -
+                              </Button>{" "}
+                            </div>
+                            <button onClick={handleDivClick}>Submit</button>
+                          </form>
+                        </div>
+                      )}
+                    </div>
+                    {/* last Line Passenger */}
+                  </div>
+
+                  <div>
+                    <img
+                      className="date_icon"
+                      src={date_icon}
+                      alt="Date Icon"
+                    />
+                    {/* First Line Modal Departure */}
+                    <Button
+                      onClick={handleOpenDeparture}
+                      className="button_departure"
+                    >
+                      Departure : {datedep}
+                    </Button>
+                    <ModalDeparture
+                      show={showDeparture}
+                      onClose={handleCloseDeparture}
+                      onSelectDate={handleDateSelectDep}
+                    />
+
+                    {/* Last Line Modal Departure */}
+
+                    {/* Switch untuk mengaktifkan return */}
+                    <span className="span_switch">
+                      <Switch
+                        checked={checked}
+                        onChange={handleChange}
+                        size="small"
+                        className="button_switch"
+                      />
+                    </span>
+
+                    {/* First Line Modal Return */}
+                    <span className="span_return">
+                      <Button
+                        onClick={handleOpenReturn}
+                        disabled={!checked}
+                        className="button_return"
+                      >
+                        Return : {dateret}
+                      </Button>
+                      <ModalReturn
+                        show={showReturn}
+                        onClose={handleCloseReturn}
+                        onSelectDate={handleDateSelectRet}
+                      />
+                    </span>
+                    {/* Last Line Modal Return */}
+
+                    <span className="span_seat_class">
+                      <img
+                        className="seat_class_icon"
+                        src={seat_class}
+                        alt="Seat Class Icon"
+                      />
+
+                      <FormControl
+                        sx={{ m: 1, minWidth: 150 }}
+                        className="seat_class_box"
+                      >
+                        <InputLabel id="return-select-label-id">
+                          Seat Class
+                        </InputLabel>
+                        <Select
+                          labelId="return-select-label"
+                          id="return-select"
+                          label="Seat Class"
+                          value={selectedValue}
+                          onChange={handleMenuItemClick}
+                        >
+                          <MenuItem value={"ECONOMY"}>Economy</MenuItem>
+                          <MenuItem value={"PREMIUM ECONOMY"}>
+                            Premium Economy
+                          </MenuItem>
+                          <MenuItem value={"BUSINESS"}>Business</MenuItem>
+                          <MenuItem value={"FIRST CLASS"}>First Class</MenuItem>
+                        </Select>
+                        <FormHelperText>Kelas Penerbangan</FormHelperText>
+                      </FormControl>
+                    </span>
+                    <div className="container_search">
+                      <Link to={"/search_result"}>
+                        <ButtonMui
+                          variant="contained"
+                          size="large"
+                          sx={{ m: 2, minWidth: 30 }}
+                          className="button_search_booking"
+                        >
+                          CARI PENERBANGAN
+                        </ButtonMui>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
               </form>
-              
             </div>
             {/* First Line Form Booking Destinasi */}
           </div>
@@ -513,6 +548,7 @@ function Home(props) {
             <h6 className="title_destinasi">Destinasi Favorit</h6>
 
             {/* First Line Kategori Destinasi */}
+
             <div className="kategori">
               <Button className="button_kategori">
                 <img
@@ -520,9 +556,12 @@ function Home(props) {
                   src={search_logo}
                   alt="Icon Search"
                 />
-                <p className="text-masuk">Semua</p>
+                {favDestination.map((item) => (
+                  <p className="text-masuk">{item.city}</p>
+                ))}
               </Button>
-              <Button className="button_kategori">
+
+              {/* <Button className="button_kategori">
                 <img
                   className="icon_masuk"
                   src={search_logo}
@@ -570,97 +609,13 @@ function Home(props) {
                   alt="Icon Search"
                 />
                 <p className="text-masuk">Afrika</p>
-              </Button>
+              </Button> */}
             </div>
+
             {/* last Line Kategori Destinasi */}
 
             {/* Card Fav Destination */}
-            <div className="card-destination">
-              <Card className="card-kategori">
-                <Card.Img
-                  className="img_kategori"
-                  variant="top"
-                  src={img_destination1}
-                />
-                <Card.Body>
-                  <h6 className="destination">Jakarta - Bangkok</h6>
-                  <h6 className="airline">AirAsia</h6>
-                  <h6 className="date">20 - 30 Maret 2023</h6>
-                  <h6 className="price">
-                    Mulai dari <br />
-                    IDR 950.000
-                  </h6>
-                </Card.Body>
-              </Card>
-
-              <Card className="card-kategori2">
-                <Card.Img
-                  className="img_kategori"
-                  variant="top"
-                  src={img_destination1}
-                />
-                <Card.Body>
-                  <h6 className="destination">Jakarta - Bangkok</h6>
-                  <h6 className="airline">AirAsia</h6>
-                  <h6 className="date">20 - 30 Maret 2023</h6>
-                  <h6 className="price">
-                    Mulai dari <br />
-                    IDR 950.000
-                  </h6>
-                </Card.Body>
-              </Card>
-
-              <Card className="card-kategori3">
-                <Card.Img
-                  className="img_kategori"
-                  variant="top"
-                  src={img_destination1}
-                />
-                <Card.Body>
-                  <h6 className="destination">Jakarta - Bangkok</h6>
-                  <h6 className="airline">AirAsia</h6>
-                  <h6 className="date">20 - 30 Maret 2023</h6>
-                  <h6 className="price">
-                    Mulai dari
-                    <br />
-                    IDR 950.000
-                  </h6>
-                </Card.Body>
-              </Card>
-
-              <Card className="card-kategori4">
-                <Card.Img
-                  className="img_kategori"
-                  variant="top"
-                  src={img_destination1}
-                />
-                <Card.Body>
-                  <h6 className="destination">Jakarta - Bangkok</h6>
-                  <h6 className="airline">AirAsia</h6>
-                  <h6 className="date">20 - 30 Maret 2023</h6>
-                  <h6 className="price">
-                    Mulai dari <br />
-                    IDR 950.000
-                  </h6>
-                </Card.Body>
-              </Card>
-
-              <Card className="card-kategori5">
-                <Card.Img
-                  className="img_kategori"
-                  variant="top"
-                  src={img_destination1}
-                />
-                <Card.Body>
-                  <h6 className="destination">Jakarta - Bangkok</h6>
-                  <h6 className="airline">AirAsia</h6>
-                  <h6 className="date">20 - 30 Maret 2023</h6>
-                  <h6 className="price">
-                    Mulai dari <br /> IDR 950.000
-                  </h6>
-                </Card.Body>
-              </Card>
-            </div>
+            <CardFavDestination />
           </div>
         </Row>
       </Container>

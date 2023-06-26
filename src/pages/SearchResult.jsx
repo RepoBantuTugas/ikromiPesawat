@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
 import { Container, Row } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import Header from "../components/Header";
+import HeaderLogin from "../components/HeaderLogin";
 import "../styles/search_result.css";
 import arrow_left from "../styles/images/arrow_left.png";
 import arrow_up_down from "../styles/images/arrow_up_down.png";
 import transit_icon from "../styles/images/fi_box.png";
 import fasilitas_icon from "../styles/images/fi_heart.png";
 import harga_icon from "../styles/images/fi_dollar-sign.png";
-import "../styles/search_result.css";
 
 import Button from "react-bootstrap/Button";
-import { Link, useLocation } from "react-router-dom";
 import Loading from "../components/search-result/Loading";
 import Empty from "../components/search-result/Empty";
-import CardResult from "../components/search-result/CardResult";
-import HeaderLogin from "../components/HeaderLogin";
+// import CardResult from "../components/search-result/CardResult";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import "../styles/search_result.css";
 
 function SearchResult(props) {
   const [tokentoSearchResult, setTokentoSearchResult] = useState(
@@ -151,29 +149,28 @@ function SearchResult(props) {
 
           {/* <Loading /> */}
           {/* <Empty /> */}
+          {/* Accordion Result */}
           <div className="container_accordion">
-             {data.map((data)=>(
+            {data.map((data) => (
               <Accordion className="box_accordion">
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>{data.airline.name} - {data.info.seat_class}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Laboriosam consequuntur corrupti quisquam tempore mollitia
-                  commodi. Explicabo magnam laboriosam molestiae quo.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    {data.airline.name} - {data.info.seat_class}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                    ea recusandae minus, nulla corrupti nam!
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            ))}
           </div>
-         
         </Row>
       </Container>
     </>

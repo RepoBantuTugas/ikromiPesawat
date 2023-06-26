@@ -21,7 +21,7 @@ const Login = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://tiketku-api-development.up.railway.app/auth/login", user)
+      .post("https://tiketku-development.up.railway.app/auth/login", user)
       .then((response) => {
         // Handle successful registration
         console.log(response.data);
@@ -75,7 +75,7 @@ const Login = (props) => {
                   value={password}
                   onChange={handlePasswordChange}
                   type="password"
-                  placeholder="Buat Password"
+                  placeholder="Masukan Password"
                 />
               </Form.Group>
               <Button
