@@ -165,7 +165,7 @@ function Home(props) {
   };
 
   const handleSearchFlight = (e) => {
-    console.log(dataPost);
+    console.log(dataPost, "Dataposttt");
     e.preventDefault();
     axios
       .post(
@@ -173,12 +173,13 @@ function Home(props) {
         dataPost
       )
       .then((response) => {
-        // Handle Successful Registration
+        // Handle Successful --
         nav("/search_result", { state: response.data.data.flights });
       })
       .catch((error) => {
         // Handle Error
-        console.log(error);
+        nav("/search_result", { state: [] });
+        console.log(error, "erorku");
       });
   };
 
@@ -191,6 +192,8 @@ function Home(props) {
     arrival_airport_city: selectedValueCityTo,
     departure_airport_city: selectedValueCityFrom,
   };
+
+  console.log(dataPost, "Dataposttt2");
 
   // Last Line Search Flight
 
@@ -514,9 +517,6 @@ function Home(props) {
                           onChange={handleMenuItemClick}
                         >
                           <MenuItem value={"ECONOMY"}>Economy</MenuItem>
-                          <MenuItem value={"PREMIUM ECONOMY"}>
-                            Premium Economy
-                          </MenuItem>
                           <MenuItem value={"BUSINESS"}>Business</MenuItem>
                           <MenuItem value={"FIRST CLASS"}>First Class</MenuItem>
                         </Select>
@@ -524,16 +524,18 @@ function Home(props) {
                       </FormControl>
                     </span>
                     <div className="container_search">
-                      <Link to={"/search_result"}>
-                        <ButtonMui
-                          variant="contained"
-                          size="large"
-                          sx={{ m: 2, minWidth: 30 }}
-                          className="button_search_booking"
-                        >
-                          CARI PENERBANGAN
-                        </ButtonMui>
-                      </Link>
+                      {/* <Link to={"/search_result"}> */}
+
+                      {/* </Link> */}
+                      <ButtonMui
+                        variant="contained"
+                        type="submit"
+                        size="large"
+                        sx={{ m: 2, minWidth: 30 }}
+                        className="button_search_booking"
+                      >
+                        CARI PENERBANGAN
+                      </ButtonMui>
                     </div>
                   </div>
                 </div>
