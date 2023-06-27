@@ -524,16 +524,9 @@ function Home(props) {
                       </FormControl>
                     </span>
                     <div className="container_search">
-                      <Link to={"/search_result"}>
-                        <ButtonMui
-                          variant="contained"
-                          size="large"
-                          sx={{ m: 2, minWidth: 30 }}
-                          className="button_search_booking"
-                        >
-                          CARI PENERBANGAN
-                        </ButtonMui>
-                      </Link>
+                      {/* <Link to={"/search_result"}>
+                        
+                      </Link> */}
                     </div>
                   </div>
                 </div>

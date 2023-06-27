@@ -151,7 +151,7 @@ function SearchResult(props) {
           {/* <Empty /> */}
           {/* Accordion Result */}
           <div className="container_accordion">
-            {data.map((data) => (
+            {data === null ? (<><h1>Kosong</h1></>):data.map((data) => (
               <Accordion className="box_accordion">
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
