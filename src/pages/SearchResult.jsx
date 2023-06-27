@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import HeaderLogin from "../components/HeaderLogin";
 import "../styles/search_result.css";
@@ -9,7 +9,7 @@ import arrow_up_down from "../styles/images/arrow_up_down.png";
 import transit_icon from "../styles/images/fi_box.png";
 import fasilitas_icon from "../styles/images/fi_heart.png";
 import harga_icon from "../styles/images/fi_dollar-sign.png";
-import arrow_accordion from "../styles/images/arrow_accordion.png";
+// import arrow_accordion from "../styles/images/arrow_accordion.png";
 
 import Button from "react-bootstrap/Button";
 import Loading from "../components/search-result/Loading";
@@ -21,6 +21,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CardResult from "../components/search-result/CardResult";
+import axios from "axios";
 
 function SearchResult(props) {
   const [tokentoSearchResult, setTokentoSearchResult] = useState(
@@ -30,11 +31,11 @@ function SearchResult(props) {
   useEffect(() => {
     setTokentoSearchResult(props.tokenLogin);
   }, [props]);
-
+  const nav = useNavigate();
   const loc = useLocation();
-  const data = loc.state;
+  const { data, penumpang, seat_class } = loc.state;
   useEffect(() => {
-    console.log(data);
+    console.log(seat_class);
   }, []);
 
   return (
@@ -60,14 +61,18 @@ function SearchResult(props) {
                 src={arrow_left}
                 alt="Arrow Icon"
               />
-              {data.map((data) => (
-                <p className="text_result_data_selected">
-                  {data.departure_airport.iata} - {data.arrival_airport.iata} -{" "}
-                  {data.info.seat_class}
-                </p>
-              ))}
+              {data !== null ? (
+                data.map((data) => (
+                  <p className="text_result_data_selected">
+                    {data.departure_airport.iata} - {data.arrival_airport.iata}{" "}
+                    - {data.info.seat_class}
+                  </p>
+                ))
+              ) : (
+                <>kosong</>
+              )}
 
-              <Button variant="success" className="button_ubah_pencarian">
+              <Button onClick={()=>{nav('/')}} variant="success" className="button_ubah_pencarian">
                 <p className="text_button_ubah_pencarian">Ubah Pencarian</p>
               </Button>
             </div>
@@ -154,40 +159,16 @@ function SearchResult(props) {
 
           {/* <Loading /> */}
           {/* <Empty /> */}
-<<<<<<< HEAD
-          {/* Accordion Result */}
-          <div className="container_accordion">
-            {data === null ? (<><h1>Kosong</h1></>):data.map((data) => (
-              <Accordion className="box_accordion">
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>
-                    {data.airline.name} - {data.info.seat_class}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
-                    ea recusandae minus, nulla corrupti nam!
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </div>
-=======
 
           {/* {data === undefined || data === null ? <Empty /> : <CardResult />} */}
 
           {/* First Line  Accordion Result*/}
           {console.log(data, "ini datat")}
-          {data === undefined || data === null || data.length === 0 ? (
+          {data === undefined || data === null ? (
             <Empty />
           ) : (
             <div className="container_accordion">
-              {data?.map((data) => (
+              {data.map((data) => (
                 <Accordion className="box_accordion">
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -211,7 +192,7 @@ function SearchResult(props) {
                             {data.departure_time}
                           </h6>
                           <img
-                            src={arrow_accordion}
+                            // src={arrow_accordion}
                             alt="icon_arrow_accordion"
                             className="me-3"
                           />
@@ -226,18 +207,45 @@ function SearchResult(props) {
                           <h6 className="fw-bold ms-4">
                             {data.arrival_airport.iata}
                           </h6>
-                          <Button
-                            type="submit"
-                            className="custom-button-lgn text-light w-10"
-                          >
-                            Pesan
-                          </Button>
                         </div>
                       </div>
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
+                      <div style={{ display: "flex", justifyContent: "end" }}>
+                        <Button
+                          onClick={() => {
+                            let dataPost = {
+                              adult: penumpang.adult,
+                              child: penumpang.child,
+                              infant: penumpang.infant,
+                              flight_id: data.id,
+                              seat_class,
+                            };
+                            console.log(seat_class)
+                            axios
+                              .post(
+                                "https://tiketku-development.up.railway.app/flight/detail",
+                                dataPost
+                              )
+                              .then((response) => {
+                                
+                                // Handle Successful --
+                                // console.log(response.data)
+                                nav("/checkout", { state: response.data.data });
+                              })
+                              .catch((error) => {
+                                // Handle Error
+                                // nav("/search_result", { state: [] });
+                                console.log(error, "erorku");
+                              });
+                          }}
+                          className="custom-button-lgn text-light w-10"
+                        >
+                          Pesan
+                        </Button>
+                      </div>
                       <div className="mt-3">
                         <div className="issued d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold">Detail Pesanan</h5>
@@ -297,7 +305,6 @@ function SearchResult(props) {
             </div>
           )}
           {/* Last Line Accordion Result */}
->>>>>>> 29d4d72831cd9ad645370b82320c3773aefdb5cc
         </Row>
       </Container>
     </>

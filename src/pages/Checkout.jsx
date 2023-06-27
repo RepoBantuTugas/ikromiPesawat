@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Datapemesanan from "../components/Datapemesanan";
-import Datapenumpang from "../components/Datapenumpang";
+import Datapenumpang from "../components/DataPenumpang";
 // import Matahari from "../styles/images/matahari.png";
 import "../styles/checkout.css";
 import {
@@ -14,6 +14,13 @@ import {
 } from "react-bootstrap";
 
 const Checkout = () => {
+  const loc = useLocation();
+  const data = loc.state;
+  // useEffect(() => {
+  //   for (data.price.adult_count; data.price.adult_count > 0; data.price.adult_count--) {
+  //     console.log("komponen data looping ke ",data.price.adult_count)
+  //   }
+  // }, []);
   return (
     <>
       <Container className="bg warning mt-5">
@@ -62,7 +69,7 @@ const Checkout = () => {
               <Datapemesanan />
             </Row>
             <Row className="border py-4 px-4 mt-3">
-              <Datapenumpang />
+            <Datapenumpang />
             </Row>
             <Button type="submit" className="w-100 my-3 button-save">
               Simpan

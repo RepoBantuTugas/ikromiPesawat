@@ -164,6 +164,12 @@ function Home(props) {
     setSelectedValueCityTo(value);
   };
 
+  let dataPenumpang = {
+    adult: adults,
+    child: kids,
+    infant: infants,
+  };
+ 
   const handleSearchFlight = (e) => {
     console.log(dataPost, "Dataposttt");
     e.preventDefault();
@@ -173,12 +179,18 @@ function Home(props) {
         dataPost
       )
       .then((response) => {
+        let dataFlight = {
+          data : response.data.data.flights,
+          penumpang : dataPenumpang,
+          seat_class: selectedValue,
+
+        };
         // Handle Successful --
-        nav("/search_result", { state: response.data.data.flights });
+        nav("/search_result", { state: dataFlight });
       })
       .catch((error) => {
         // Handle Error
-        nav("/search_result", { state: [] });
+        // nav("/search_result", { state: [] });
         console.log(error, "erorku");
       });
   };

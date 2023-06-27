@@ -11,7 +11,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiArrowLeft, FiEdit3, FiLogOut, FiSettings } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/account.css";
 import axios from "axios";
 import BasicAlerts from "../components/toast/BasicAlert";
@@ -19,7 +19,15 @@ import { Toast } from "bootstrap";
 
 const notify = () => toast("Wow so easy!");
 
+
+
 const Account = () => {
+  const nav = useNavigate()
+  const handleSignout = () =>{
+    localStorage.removeItem("token");
+    // nav('/')
+    window.location.reload();
+  }
   const linkStyle = {
     color: "var(--primary-color)",
     textDecoration: "none",
@@ -133,9 +141,9 @@ const Account = () => {
                   Pengaturan Akun
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item action className="mt-4 border-bottom pb-3">
-                <Link to={"/logout"} style={linkStyle}>
-                  <FiLogOut className="link-style me-3" />
+              <ListGroup.Item onClick={handleSignout} action className="mt-4 border-bottom pb-3">
+                <Link  style={linkStyle}>
+                  <FiLogOut  className="link-style me-3" />
                   Keluar
                 </Link>
               </ListGroup.Item>

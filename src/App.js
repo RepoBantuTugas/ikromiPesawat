@@ -13,7 +13,7 @@ import RiwayatPemesanan from "./pages/Riwayat";
 import CardResult from "./components/search-result/CardResult";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
-import DetailPesanan from "./components/DetailPesanan";
+// import DetailPesanan from "./components/Detailpesanan";
 import PaymentSuccess from "./components/Paymentsucces";
 
 function App() {
@@ -49,9 +49,17 @@ function App() {
               </Auth>
             }
           />
+          <Route
+            path="/checkout"
+            element={
+              <Auth>
+                <Checkout />
+              </Auth>
+            }
+          />
 
           {/* Checkout */}
-          <Route path="/checkout" element={<Checkout />} />
+          {/* <Route path="/checkout" element={<Checkout />} /> */}
           <Route path="/payment" element={<Payment />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
         </Routes>
