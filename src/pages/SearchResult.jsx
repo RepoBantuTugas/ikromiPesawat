@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import HeaderLogin from "../components/HeaderLogin";
@@ -9,6 +9,7 @@ import arrow_up_down from "../styles/images/arrow_up_down.png";
 import transit_icon from "../styles/images/fi_box.png";
 import fasilitas_icon from "../styles/images/fi_heart.png";
 import harga_icon from "../styles/images/fi_dollar-sign.png";
+import arrow_accordion from "../styles/images/arrow_accordion.png";
 
 import Button from "react-bootstrap/Button";
 import Loading from "../components/search-result/Loading";
@@ -19,6 +20,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CardResult from "../components/search-result/CardResult";
 
 function SearchResult(props) {
   const [tokentoSearchResult, setTokentoSearchResult] = useState(
@@ -58,9 +60,12 @@ function SearchResult(props) {
                 src={arrow_left}
                 alt="Arrow Icon"
               />
-              <p className="text_result_data_selected">
-                JKT - MLB - 2 Penumpang - Economy
-              </p>
+              {data.map((data) => (
+                <p className="text_result_data_selected">
+                  {data.departure_airport.iata} - {data.arrival_airport.iata} -{" "}
+                  {data.info.seat_class}
+                </p>
+              ))}
 
               <Button variant="success" className="button_ubah_pencarian">
                 <p className="text_button_ubah_pencarian">Ubah Pencarian</p>
@@ -149,6 +154,7 @@ function SearchResult(props) {
 
           {/* <Loading /> */}
           {/* <Empty /> */}
+<<<<<<< HEAD
           {/* Accordion Result */}
           <div className="container_accordion">
             {data === null ? (<><h1>Kosong</h1></>):data.map((data) => (
@@ -171,6 +177,127 @@ function SearchResult(props) {
               </Accordion>
             ))}
           </div>
+=======
+
+          {/* {data === undefined || data === null ? <Empty /> : <CardResult />} */}
+
+          {/* First Line  Accordion Result*/}
+          {console.log(data, "ini datat")}
+          {data === undefined || data === null || data.length === 0 ? (
+            <Empty />
+          ) : (
+            <div className="container_accordion">
+              {data?.map((data) => (
+                <Accordion className="box_accordion">
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography>
+                      <div className="mt-3">
+                        <div className="issued d-flex align-items-center justify-content-between">
+                          <h5 className="fw-bold">
+                            <img
+                              src={data.airline.logo}
+                              alt="logo_airplane"
+                              className="logo_airplane"
+                            />
+                            {data.airline.name} - {data.info.seat_class}
+                          </h5>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h6 className="fw-bold me-3">
+                            {data.departure_time}
+                          </h6>
+                          <img
+                            src={arrow_accordion}
+                            alt="icon_arrow_accordion"
+                            className="me-3"
+                          />
+                          <h6 className="fw-bold me-5">{data.arrival_time}</h6>
+                          <h6 className="text-color">{data.info.price}</h6>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h6 className="fw-bold me-4">
+                            {data.departure_airport.iata}
+                          </h6>
+                          <p className="ms-2 me-2">{data.duration}</p>
+                          <h6 className="fw-bold ms-4">
+                            {data.arrival_airport.iata}
+                          </h6>
+                          <Button
+                            type="submit"
+                            className="custom-button-lgn text-light w-10"
+                          >
+                            Pesan
+                          </Button>
+                        </div>
+                      </div>
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      <div className="mt-3">
+                        <div className="issued d-flex align-items-center justify-content-between">
+                          <h5 className="fw-bold">Detail Pesanan</h5>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h6 className="fw-bold">{data.departure_time}</h6>
+                          <h6 className="text-color">Keberangkatan</h6>
+                        </div>
+                        <p className="mb-0">{data.date}</p>
+                        <p>
+                          {data.departure_airport.name} -{" "}
+                          {data.departure_airport.city}
+                        </p>
+                      </div>
+
+                      <hr />
+                      <Col xs={1} className="d-flex align-items-center">
+                        <Col md="auto">
+                          <h6 className="fw-bold">
+                            {data.airline.name} - {data.info.seat_class}
+                          </h6>
+                          <h6 className="fw-bold mb-4">
+                            {data.airplane_model}
+                          </h6>
+
+                          <h6 className="fw-bold">
+                            <img
+                              src={data.airline.logo}
+                              alt="logo_airplane"
+                              className="logo_airplane"
+                            />
+                            Informasi:
+                          </h6>
+                          <p>Baggage {data.info.free_baggage} kg</p>
+                          <p>Cabin Baggage {data.info.cabin_baggage} kg</p>
+                          <p>In Flight Entertainment</p>
+                        </Col>
+                      </Col>
+
+                      <hr />
+
+                      <div className="div">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h6 className="fw-bold">{data.arrival_time}</h6>
+                          <h6 className="text-color">Kedatangan</h6>
+                        </div>
+                        <p className="mb-0">{data.date}</p>
+                        <p className="fw-bold">
+                          {data.arrival_airport.name} -{" "}
+                          {data.arrival_airport.city}
+                        </p>
+                      </div>
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
+          )}
+          {/* Last Line Accordion Result */}
+>>>>>>> 29d4d72831cd9ad645370b82320c3773aefdb5cc
         </Row>
       </Container>
     </>
