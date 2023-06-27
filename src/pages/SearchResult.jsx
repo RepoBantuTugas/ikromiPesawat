@@ -9,7 +9,7 @@ import arrow_up_down from "../styles/images/arrow_up_down.png";
 import transit_icon from "../styles/images/fi_box.png";
 import fasilitas_icon from "../styles/images/fi_heart.png";
 import harga_icon from "../styles/images/fi_dollar-sign.png";
-// import arrow_accordion from "../styles/images/arrow_accordion.png";
+import arrow_accordion from "../styles/images/arrow_accordion.png";
 
 import Button from "react-bootstrap/Button";
 import Loading from "../components/search-result/Loading";
@@ -192,7 +192,7 @@ function SearchResult(props) {
                             {data.departure_time}
                           </h6>
                           <img
-                            // src={arrow_accordion}
+                            src={arrow_accordion}
                             alt="icon_arrow_accordion"
                             className="me-3"
                           />
