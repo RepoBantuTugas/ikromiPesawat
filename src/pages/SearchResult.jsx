@@ -34,9 +34,9 @@ function SearchResult(props) {
   const nav = useNavigate();
   const loc = useLocation();
   const { data, penumpang, seat_class } = loc.state;
-  useEffect(() => {
-    console.log(seat_class);
-  }, []);
+  // useEffect(() => {
+  //   console.log(data);
+  // }, []);
 
   return (
     <>
@@ -223,17 +223,22 @@ function SearchResult(props) {
                               flight_id: data.id,
                               seat_class,
                             };
-                            console.log(seat_class)
+                            // console.log(seat_class)
                             axios
                               .post(
                                 "https://tiketku-development.up.railway.app/flight/detail",
                                 dataPost
                               )
                               .then((response) => {
+
+                                const dataCheckout = {
+                                  dataPost : response.data.data,
+                                  flight_id: data.id
+                                }
                                 
                                 // Handle Successful --
                                 // console.log(response.data)
-                                nav("/checkout", { state: response.data.data });
+                                nav("/checkout", { state: dataCheckout });
                               })
                               .catch((error) => {
                                 // Handle Error
