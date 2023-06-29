@@ -19,9 +19,12 @@ import axios from "axios";
 const Checkout = () => {
   const loc = useLocation();
   const { dataPost, flight_id } = loc.state;
+
   const elementAdult = [];
   const elementKid = [];
   const elementinfant = [];
+
+  const [name, setName] = useState("");
 
   useEffect(() => {
     console.log(dataPost, flight_id);
@@ -317,23 +320,27 @@ const Checkout = () => {
     );
   }
 
-  const [data, setData] = useState({});
-  const [datakid, setDatakid] = useState({});
-  const [datainf, setDatainf] = useState({});
+  const [data, setData] = useState([]);
+  const [datakid, setDatakid] = useState([]);
+  const [datainf, setDatainf] = useState([]);
   function handleCreateOrder(e) {
     e.preventDefault();
     // console.log("halo")
     // console.log(dataPost)
 
-    function addObjectIfNotEmpty(array, obj) {
-      if (Object.keys(obj).length !== 0) {
-        array.push(obj);
+    function addObjectFromArray(masterArray, objectArray) {
+      if (objectArray.length !== 0) {
+        for (let i = 0; i < objectArray.length; i++) {
+          masterArray.push(objectArray[i]);
+        }
       }
     }
+
     const combinated = [];
-    addObjectIfNotEmpty(combinated, data);
-    addObjectIfNotEmpty(combinated, datakid);
-    addObjectIfNotEmpty(combinated, datainf);
+    addObjectFromArray(combinated, data);
+    addObjectFromArray(combinated, datakid);
+    addObjectFromArray(combinated, datainf);
+    console.log(combinated);
     const order = {
       adult: dataPost.price.adult_count,
       child: dataPost.price.child_count,
@@ -361,10 +368,13 @@ const Checkout = () => {
   function handleChange(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
-    console.log(e.target.value, index);
-    // data = {"title" : e.target.value,"age_group" : "adult"}
-
-    setData({ title: e.target.value, age_group: "adult" });
+    // console.log(e.target.value,index)
+    // data = {...data,}
+    const newData = { title: e.target.value, age_group: "adult" };
+    const updatedObject = { ...data[index], ...newData };
+    const updatedMaster = [...data];
+    updatedMaster[index] = updatedObject;
+    setData(updatedMaster);
 
     // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
@@ -372,7 +382,11 @@ const Checkout = () => {
     // setData(e.target.value)
     // const newData = [...data]
     // datakid[index] = {"title" : e.target.value,"age_group" : "kid"}
-    setDatakid({ title: e.target.value, age_group: "child" });
+    const newData = { title: e.target.value, age_group: "child" };
+    const updatedObject = { ...datakid[index], ...newData };
+    const updatedMaster = [...datakid];
+    updatedMaster[index] = updatedObject;
+    setDatakid(updatedMaster);
 
     // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
@@ -380,7 +394,11 @@ const Checkout = () => {
     // setData(e.target.value)
     // const newData = [...data]
     // datainf[index] = {"title" : e.target.value,"age_group" : "infant"}
-    setDatainf({ title: e.target.value, age_group: "infant" });
+    const newData = { title: e.target.value, age_group: "infant" };
+    const updatedObject = { ...datainf[index], ...newData };
+    const updatedMaster = [...datainf];
+    updatedMaster[index] = updatedObject;
+    setDatainf(updatedMaster);
 
     // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
@@ -388,10 +406,20 @@ const Checkout = () => {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
-    console.log(e.target.value, index);
+    // console.log(e.target.value,index)
     // data[index] = {...data[index],"fullname" : e.target.value}
 
-    setData({ ...data, fullname: e.target.value });
+    // setData({...data,"fullname" : e.target.value})
+    // setName(e.target.value)
+    const newData = { fullname: e.target.value };
+    const updatedObject = { ...data[index], ...newData };
+    const updatedMaster = [...data];
+    updatedMaster[index] = updatedObject;
+    setData(updatedMaster);
+    // setName('');
+    // setName('')
+
+    // setData([...data,data[index] = newData])
   }
   function handleChangeNameKid(e, index) {
     // setData(e.target.value)
@@ -400,7 +428,11 @@ const Checkout = () => {
     // console.log(e.target.value,index)
     // datakid[index] = {...datakid[index],"fullname" : e.target.value}
 
-    setDatakid({ ...datakid, fullname: e.target.value });
+    const newData = { fullname: e.target.value };
+    const updatedObject = { ...datakid[index], ...newData };
+    const updatedMaster = [...datakid];
+    updatedMaster[index] = updatedObject;
+    setDatakid(updatedMaster);
   }
   function handleChangeNameInf(e, index) {
     // setData(e.target.value)
@@ -408,50 +440,77 @@ const Checkout = () => {
     // newData[index] = {...newData,"daffa":e.target.value}
     // console.log(e.target.value,index)
     // datainf[index] = {...datainf[index],"fullname" : e.target.value}
-
-    setDatainf({ ...datainf, fullname: e.target.value });
+    const newData = { fullname: e.target.value };
+    const updatedObject = { ...datainf[index], ...newData };
+    const updatedMaster = [...datainf];
+    updatedMaster[index] = updatedObject;
+    setDatainf(updatedMaster);
   }
   function handleChangeDate(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // data[index] = {...data[index],"birthdate" : e.target.value}
-    setData({ ...data, birthdate: e.target.value });
+    const newData = { birthdate: e.target.value };
+    const updatedObject = { ...data[index], ...newData };
+    const updatedMaster = [...data];
+    updatedMaster[index] = updatedObject;
+    setData(updatedMaster);
   }
   function handleChangeDateKid(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // datakid[index] = {...datakid[index],"birthdate" : e.target.value}
-    setDatakid({ ...datakid, birthdate: e.target.value });
+    const newData = { birthdate: e.target.value };
+    const updatedObject = { ...datakid[index], ...newData };
+    const updatedMaster = [...datakid];
+    updatedMaster[index] = updatedObject;
+    setDatakid(updatedMaster);
   }
   function handleChangeDateInf(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // datainf[index] = {...datainf[index],"birthdate" : e.target.value}
-    setDatainf({ ...datainf, birthdate: e.target.value });
+    const newData = { birthdate: e.target.value };
+    const updatedObject = { ...datainf[index], ...newData };
+    const updatedMaster = [...datainf];
+    updatedMaster[index] = updatedObject;
+    setDatainf(updatedMaster);
   }
   function handleChangeNational(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // data[index] = {...data[index],"nationality" : e.target.value}
-    setData({ ...data, nationality: e.target.value });
+    const newData = { nationality: e.target.value };
+    const updatedObject = { ...data[index], ...newData };
+    const updatedMaster = [...data];
+    updatedMaster[index] = updatedObject;
+    setData(updatedMaster);
   }
   function handleChangeNationalKid(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // datakid[index] = {...datakid[index],"nationality" : e.target.value}
-    setDatakid({ ...datakid, nationality: e.target.value });
+    const newData = { nationality: e.target.value };
+    const updatedObject = { ...datakid[index], ...newData };
+    const updatedMaster = [...datakid];
+    updatedMaster[index] = updatedObject;
+    setDatakid(updatedMaster);
   }
   function handleChangeNationalInf(e, index) {
     // setData(e.target.value)
     // const newData = [...data]
     // newData[index] = {...newData,"daffa":e.target.value}
     // datainf[index] = {...datainf[index],"nationality" : e.target.value}
-    setDatainf({ ...datainf, nationality: e.target.value });
+    const newData = { nationality: e.target.value };
+    const updatedObject = { ...datainf[index], ...newData };
+    const updatedMaster = [...datainf];
+    updatedMaster[index] = updatedObject;
+    setDatainf(updatedMaster);
   }
   function handleChangeKtp(e, index) {
     // setData(e.target.value)
@@ -459,7 +518,11 @@ const Checkout = () => {
     // newData[index] = {...newData,"daffa":e.target.value}
     // console.log(e.target.value,index)
     // data[index] = {...data[index],"ktp" : e.target.value}
-    setData({ ...data, ktp: e.target.value });
+    const newData = { ktp: e.target.value };
+    const updatedObject = { ...data[index], ...newData };
+    const updatedMaster = [...data];
+    updatedMaster[index] = updatedObject;
+    setData(updatedMaster);
   }
   function handleChangeKtpKid(e, index) {
     // setData(e.target.value)
@@ -467,7 +530,11 @@ const Checkout = () => {
     // newData[index] = {...newData,"daffa":e.target.value}
     // console.log(e.target.value,index)
     // data[index] = {...data[index],"ktp" : e.target.value}
-    setDatakid({ ...datakid, ktp: e.target.value });
+    const newData = { ktp: e.target.value };
+    const updatedObject = { ...datakid[index], ...newData };
+    const updatedMaster = [...datakid];
+    updatedMaster[index] = updatedObject;
+    setDatakid(updatedMaster);
   }
   function handleChangeKtpInf(e, index) {
     // setData(e.target.value)
@@ -475,7 +542,11 @@ const Checkout = () => {
     // newData[index] = {...newData,"daffa":e.target.value}
     // console.log(e.target.value,index)
     // data[index] = {...data[index],"ktp" : e.target.value}
-    setDatainf({ ...datainf, ktp: e.target.value });
+    const newData = { ktp: e.target.value };
+    const updatedObject = { ...datainf[index], ...newData };
+    const updatedMaster = [...datainf];
+    updatedMaster[index] = updatedObject;
+    setDatainf(updatedMaster);
   }
   return (
     <>
