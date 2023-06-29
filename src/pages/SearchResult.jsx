@@ -34,9 +34,9 @@ function SearchResult(props) {
   const nav = useNavigate();
   const loc = useLocation();
   const { data, penumpang, seat_class } = loc.state;
-  // useEffect(() => {
-  //   console.log(data);
-  // }, []);
+  useEffect(() => {
+    console.log(seat_class);
+  }, []);
 
   return (
     <>
@@ -72,7 +72,13 @@ function SearchResult(props) {
                 <>kosong</>
               )}
 
-              <Button onClick={()=>{nav('/')}} variant="success" className="button_ubah_pencarian">
+              <Button
+                onClick={() => {
+                  nav("/");
+                }}
+                variant="success"
+                className="button_ubah_pencarian"
+              >
                 <p className="text_button_ubah_pencarian">Ubah Pencarian</p>
               </Button>
             </div>
@@ -230,12 +236,11 @@ function SearchResult(props) {
                                 dataPost
                               )
                               .then((response) => {
-
                                 const dataCheckout = {
-                                  dataPost : response.data.data,
-                                  flight_id: data.id
-                                }
-                                
+                                  dataPost: response.data.data,
+                                  flight_id: data.id,
+                                };
+
                                 // Handle Successful --
                                 // console.log(response.data)
                                 nav("/checkout", { state: dataCheckout });
