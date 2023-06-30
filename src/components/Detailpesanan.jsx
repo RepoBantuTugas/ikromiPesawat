@@ -3,55 +3,91 @@ import { Card, Button } from "react-bootstrap";
 import "../styles/history.css";
 import { BsGeoAltFill } from "react-icons/bs";
 
-const DetailPesanan = () => {
+const DetailPesanan = ({ data, handleId }) => {
   return (
     <div>
-      <div className="issued mb-3">
-        <h6 className="fw-bold">Maret 2023</h6>
-        <Card>
-          <Card.Header className="border-0">
-            <Button>Issued</Button>
-          </Card.Header>
-          <Card.Body>
-            <Card.Text className="d-flex align-items-center justify-content-between">
-              <div className="d-flex justify-content-center gap-2">
-                <BsGeoAltFill />
-                <div>
-                  <h6 className="fw-bold">Jakarta</h6>
-                  <p className="mb-1">5 Maret 2023</p>
-                  <p>19:10</p>
-                </div>
-              </div>
-              <div className="d-flex flex-column justify-content-center align-items-center">
-                <p className="mb-0">4h 0m</p>
-                <hr className="w-400" />
-              </div>
-              <div className="d-flex justify-content-center gap-2">
-                <BsGeoAltFill />
-                <div>
-                  <h6>Melbourne</h6>
-                  <p className="mb-1">5 Maret 2023</p>
-                  <p>21:10</p>
-                </div>
-              </div>
-            </Card.Text>
-            <hr />
-            <Card.Text className="d-flex align-items-center justify-content-between">
-              <div>
-                <h6 className="fw-bold">Booking Code:</h6>
-                <p>6723y2GHK</p>
-              </div>
-              <div>
-                <h6 className="fw-bold">Class:</h6>
-                <p>Economy</p>
-              </div>
-              <h6 className="fw-bold price">IDR 9.850.000</h6>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
+      <h6 className="fw-bold">Maret 2023</h6>
+      {data.map((item) => {
+        const timeDeparture = item.flight_detail.departure_time.slice(-5);
+        const dateDeparture = item.flight_detail.departure_time.split(" ");
+        const filterDateDeparture = dateDeparture
+          .filter((item) => {
+            return item !== timeDeparture;
+          })
+          .join(" ");
 
-      <div className="unpaid mb-3">
+        const timeArrival = item.flight_detail.arrival_time.slice(-5);
+        const dateArrival = item.flight_detail.arrival_time.split(" ");
+        const filterDateArrival = dateArrival
+          .filter((item) => {
+            return item !== timeArrival;
+          })
+          .join(" ");
+
+        return (
+          <div
+            className="issued mb-3"
+            key={item.id}
+            onClick={() => handleId(item.id)}
+          >
+            <Card>
+              <Card.Header className="border-0">
+                <Button
+                  variant={
+                    item.status === "PAID"
+                      ? "success"
+                      : item.status === "UNPAID"
+                      ? "warning"
+                      : "danger"
+                  }
+                >
+                  {item.status}
+                </Button>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex justify-content-center gap-2">
+                    <BsGeoAltFill />
+                    <div>
+                      <h6 className="fw-bold">
+                        {item.flight_detail.departure_city}
+                      </h6>
+                      <p className="mb-1">{filterDateDeparture}</p>
+                      <p>{timeDeparture}</p>
+                    </div>
+                  </div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <p className="mb-0">{item.flight_detail.duration}</p>
+                    <hr className="w-400" />
+                  </div>
+                  <div className="d-flex justify-content-center gap-2">
+                    <BsGeoAltFill />
+                    <div>
+                      <h6>{item.flight_detail.arrival_city}</h6>
+                      <p className="mb-1">{filterDateArrival}</p>
+                      <p>{timeArrival}</p>
+                    </div>
+                  </div>
+                </Card.Text>
+                <hr />
+                <Card.Text className="d-flex align-items-center justify-content-between">
+                  <div>
+                    <h6 className="fw-bold">Booking Code:</h6>
+                    <p>6723y2GHK</p>
+                  </div>
+                  <div>
+                    <h6 className="fw-bold">Class:</h6>
+                    <p>{item.seat_class}</p>
+                  </div>
+                  <h6 className="fw-bold price">IDR {item.price}</h6>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
+        );
+      })}
+
+      {/* <div className="unpaid mb-3">
         <Card>
           <Card.Header className="border-0">
             <Button>Unpaid</Button>
@@ -140,7 +176,7 @@ const DetailPesanan = () => {
             </Card.Text>
           </Card.Body>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };

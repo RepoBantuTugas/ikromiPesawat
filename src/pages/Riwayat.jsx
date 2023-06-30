@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -13,6 +13,7 @@ import DetailPesanan from "../components/Detailpesanan";
 import "../styles/history.css";
 import HeaderLogin from "../components/HeaderLogin";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const History = () => {
   const [showSearch, setShowSearch] = useState(false);
@@ -23,6 +24,54 @@ const History = () => {
   const handleCloseFilter = () => setShowFilter(false);
   const handleShowFilter = () => setShowFilter(true);
 
+  const [riwayat, setRiwayat] = useState([]);
+  const [dataById, setDataById] = useState([]);
+  const [id, setId] = useState("");
+  console.log(id);
+
+  const handleId = (id) => {
+    setId(id);
+  };
+
+  const getData = () => {
+    axios
+      .get(`https://tiketku-development.up.railway.app/order`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setRiwayat(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const getDataDetail = (id) => {
+    axios
+      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setDataById(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    getDataDetail(id);
+  }, [id]);
   return (
     <>
       <HeaderLogin />
@@ -59,18 +108,22 @@ const History = () => {
 
         <Row className="mt-4">
           <Col>
-            <DetailPesanan />
+            <DetailPesanan data={riwayat} handleId={handleId} />
           </Col>
 
           <Col>
             <div className="mt-3">
               <div className="issued d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold">Detail Pesanan</h5>
-                <Button>Issued</Button>
+                <Button
+                  variant={dataById.status === "PAID" ? "success" : "danger"}
+                >
+                  {dataById.status}
+                </Button>
               </div>
               <h6>
                 Booking Code:
-                <b className="total-color"> 6723y2GHK</b>{" "}
+                <b className="total-color"> {dataById.booking_code}</b>{" "}
               </h6>
               <div className="d-flex justify-content-between align-items-center">
                 <h6 className="fw-bold">19:10</h6>
