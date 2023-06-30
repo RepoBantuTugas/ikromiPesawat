@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import Matahari from "../styles/images/Matahari.png";
 import Payment from "../styles/images/Payment.png";
@@ -19,7 +19,26 @@ import axios from "axios";
 
 const PaymentPage = () => {
   const loc = useLocation();
-  const { dataPost, order_id } = loc.state;
+  const id = loc.state
+  const [ data, setData ] = useState();
+  useEffect(() => {
+    axios
+      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data.data)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+  useEffect(() => {
+    console.log(data)
+  }, [data]);
 
   return (
     <>
