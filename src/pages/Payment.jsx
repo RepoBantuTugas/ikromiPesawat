@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import Matahari from "../styles/images/Matahari.png";
 import Payment from "../styles/images/Payment.png";
 import "../styles/Payment.css";
@@ -15,8 +15,12 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
+import axios from "axios";
 
 const PaymentPage = () => {
+  const loc = useLocation();
+  const { dataPost, order_id } = loc.state;
+
   return (
     <>
       <Container className="mt-5">

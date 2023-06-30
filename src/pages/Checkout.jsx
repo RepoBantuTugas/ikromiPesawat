@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Datapemesanan from "../components/Datapemesanan";
-import Datapenumpang from "../components/DataPenumpang";
+// import Datapenumpang from "../components/DataPenumpang";
 // import Matahari from "../styles/images/matahari.png";
 import "../styles/checkout.css";
 import {
@@ -19,12 +19,10 @@ import axios from "axios";
 const Checkout = () => {
   const loc = useLocation();
   const { dataPost, flight_id } = loc.state;
-
   const elementAdult = [];
   const elementKid = [];
   const elementinfant = [];
-
-  const [name, setName] = useState("");
+  const [name, setName] = useState();
 
   useEffect(() => {
     console.log(dataPost, flight_id);
@@ -328,7 +326,7 @@ const Checkout = () => {
     // console.log("halo")
     // console.log(dataPost)
 
-    function addObjectFromArray(masterArray, objectArray) {
+    function addObjectIfFromArray(masterArray, objectArray) {
       if (objectArray.length !== 0) {
         for (let i = 0; i < objectArray.length; i++) {
           masterArray.push(objectArray[i]);
@@ -337,10 +335,9 @@ const Checkout = () => {
     }
 
     const combinated = [];
-    addObjectFromArray(combinated, data);
-    addObjectFromArray(combinated, datakid);
-    addObjectFromArray(combinated, datainf);
-    console.log(combinated);
+    addObjectIfFromArray(combinated, data);
+    addObjectIfFromArray(combinated, datakid);
+    addObjectIfFromArray(combinated, datainf);
     const order = {
       adult: dataPost.price.adult_count,
       child: dataPost.price.child_count,
@@ -365,69 +362,39 @@ const Checkout = () => {
       });
     // console.log(order)
   }
+
+  // Handle Change tiap form dibikin sendiri"
   function handleChange(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // console.log(e.target.value,index)
-    // data = {...data,}
     const newData = { title: e.target.value, age_group: "adult" };
     const updatedObject = { ...data[index], ...newData };
     const updatedMaster = [...data];
     updatedMaster[index] = updatedObject;
     setData(updatedMaster);
-
-    // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
   function handleChangeKid(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // datakid[index] = {"title" : e.target.value,"age_group" : "kid"}
     const newData = { title: e.target.value, age_group: "child" };
     const updatedObject = { ...datakid[index], ...newData };
     const updatedMaster = [...datakid];
     updatedMaster[index] = updatedObject;
     setDatakid(updatedMaster);
-
-    // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
   function handleChangeInf(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // datainf[index] = {"title" : e.target.value,"age_group" : "infant"}
     const newData = { title: e.target.value, age_group: "infant" };
     const updatedObject = { ...datainf[index], ...newData };
     const updatedMaster = [...datainf];
     updatedMaster[index] = updatedObject;
     setDatainf(updatedMaster);
-
-    // setData((prevFormData) => ({ ...prevFormData, index: e.target.value }));
   }
-  function handleChangeName(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // data[index] = {...data[index],"fullname" : e.target.value}
 
-    // setData({...data,"fullname" : e.target.value})
-    // setName(e.target.value)
+  // Name
+  function handleChangeName(e, index) {
     const newData = { fullname: e.target.value };
     const updatedObject = { ...data[index], ...newData };
     const updatedMaster = [...data];
     updatedMaster[index] = updatedObject;
     setData(updatedMaster);
-    // setName('');
-    // setName('')
-
-    // setData([...data,data[index] = newData])
   }
   function handleChangeNameKid(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // datakid[index] = {...datakid[index],"fullname" : e.target.value}
-
     const newData = { fullname: e.target.value };
     const updatedObject = { ...datakid[index], ...newData };
     const updatedMaster = [...datakid];
@@ -435,22 +402,15 @@ const Checkout = () => {
     setDatakid(updatedMaster);
   }
   function handleChangeNameInf(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // datainf[index] = {...datainf[index],"fullname" : e.target.value}
     const newData = { fullname: e.target.value };
     const updatedObject = { ...datainf[index], ...newData };
     const updatedMaster = [...datainf];
     updatedMaster[index] = updatedObject;
     setDatainf(updatedMaster);
   }
+
+  // Date
   function handleChangeDate(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // data[index] = {...data[index],"birthdate" : e.target.value}
     const newData = { birthdate: e.target.value };
     const updatedObject = { ...data[index], ...newData };
     const updatedMaster = [...data];
@@ -458,10 +418,6 @@ const Checkout = () => {
     setData(updatedMaster);
   }
   function handleChangeDateKid(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // datakid[index] = {...datakid[index],"birthdate" : e.target.value}
     const newData = { birthdate: e.target.value };
     const updatedObject = { ...datakid[index], ...newData };
     const updatedMaster = [...datakid];
@@ -469,21 +425,15 @@ const Checkout = () => {
     setDatakid(updatedMaster);
   }
   function handleChangeDateInf(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // datainf[index] = {...datainf[index],"birthdate" : e.target.value}
     const newData = { birthdate: e.target.value };
     const updatedObject = { ...datainf[index], ...newData };
     const updatedMaster = [...datainf];
     updatedMaster[index] = updatedObject;
     setDatainf(updatedMaster);
   }
+
+  // National
   function handleChangeNational(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // data[index] = {...data[index],"nationality" : e.target.value}
     const newData = { nationality: e.target.value };
     const updatedObject = { ...data[index], ...newData };
     const updatedMaster = [...data];
@@ -491,10 +441,6 @@ const Checkout = () => {
     setData(updatedMaster);
   }
   function handleChangeNationalKid(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // datakid[index] = {...datakid[index],"nationality" : e.target.value}
     const newData = { nationality: e.target.value };
     const updatedObject = { ...datakid[index], ...newData };
     const updatedMaster = [...datakid];
@@ -502,22 +448,15 @@ const Checkout = () => {
     setDatakid(updatedMaster);
   }
   function handleChangeNationalInf(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // datainf[index] = {...datainf[index],"nationality" : e.target.value}
     const newData = { nationality: e.target.value };
     const updatedObject = { ...datainf[index], ...newData };
     const updatedMaster = [...datainf];
     updatedMaster[index] = updatedObject;
     setDatainf(updatedMaster);
   }
+
+  // KTP / NIK
   function handleChangeKtp(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // data[index] = {...data[index],"ktp" : e.target.value}
     const newData = { ktp: e.target.value };
     const updatedObject = { ...data[index], ...newData };
     const updatedMaster = [...data];
@@ -525,11 +464,6 @@ const Checkout = () => {
     setData(updatedMaster);
   }
   function handleChangeKtpKid(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // data[index] = {...data[index],"ktp" : e.target.value}
     const newData = { ktp: e.target.value };
     const updatedObject = { ...datakid[index], ...newData };
     const updatedMaster = [...datakid];
@@ -537,17 +471,37 @@ const Checkout = () => {
     setDatakid(updatedMaster);
   }
   function handleChangeKtpInf(e, index) {
-    // setData(e.target.value)
-    // const newData = [...data]
-    // newData[index] = {...newData,"daffa":e.target.value}
-    // console.log(e.target.value,index)
-    // data[index] = {...data[index],"ktp" : e.target.value}
     const newData = { ktp: e.target.value };
     const updatedObject = { ...datainf[index], ...newData };
     const updatedMaster = [...datainf];
     updatedMaster[index] = updatedObject;
     setDatainf(updatedMaster);
   }
+
+  // Passing Data Payment
+  const nav = useNavigate();
+
+  const handlePayButton = (e) => {
+    e.preventDefault();
+    console.log(dataPost, "data kee payment");
+    axios
+      .get(
+        `https://tiketku-development.up.railway.app/order/{order_id}`,
+        dataPost,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((response) => {
+        nav("/payment", { state: dataPost });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <>
       <Container className="bg warning mt-5">
@@ -689,8 +643,10 @@ const Checkout = () => {
               </h5>
             </div>
             <br />
-            <Link to="/Payment" className="w-100 pay">
-              Lanjut Bayar
+            <Link className="w-100 pay">
+              <Button onClick={handlePayButton} variant="danger">
+                Lanjut Bayar
+              </Button>
             </Link>
           </Col>
         </Row>

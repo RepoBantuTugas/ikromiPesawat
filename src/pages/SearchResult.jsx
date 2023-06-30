@@ -27,12 +27,13 @@ function SearchResult(props) {
   const [tokentoSearchResult, setTokentoSearchResult] = useState(
     props.tokenLogin ? props.tokenLogin : undefined
   );
-
   useEffect(() => {
     setTokentoSearchResult(props.tokenLogin);
   }, [props]);
   const nav = useNavigate();
   const loc = useLocation();
+
+  // Tempat menampung temporary data dari home
   const { data, penumpang, seat_class } = loc.state;
   useEffect(() => {
     console.log(seat_class);
@@ -184,16 +185,16 @@ function SearchResult(props) {
                     <Typography>
                       <div className="mt-3">
                         <div className="issued d-flex align-items-center justify-content-between">
-                          <h5 className="fw-bold">
+                          <h6 className="fw-bold">
                             <img
                               src={data.airline.logo}
                               alt="logo_airplane"
                               className="logo_airplane"
                             />
                             {data.airline.name} - {data.info.seat_class}
-                          </h5>
+                          </h6>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center">
+                        <div className="d-flex justify-content-beetwen align-items-center">
                           <h6 className="fw-bold me-3">
                             {data.departure_time}
                           </h6>
@@ -205,12 +206,12 @@ function SearchResult(props) {
                           <h6 className="fw-bold me-5">{data.arrival_time}</h6>
                           <h6 className="text-color">{data.info.price}</h6>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <h6 className="fw-bold me-4">
+                        <div className="d-flex">
+                          <h6 className="fw-bold me-5">
                             {data.departure_airport.iata}
                           </h6>
-                          <p className="ms-2 me-2">{data.duration}</p>
-                          <h6 className="fw-bold ms-4">
+                          <p className="ms-4 me-4">{data.duration}</p>
+                          <h6 className="fw-bold ms-5">
                             {data.arrival_airport.iata}
                           </h6>
                         </div>
@@ -222,32 +223,33 @@ function SearchResult(props) {
                       <div style={{ display: "flex", justifyContent: "end" }}>
                         <Button
                           onClick={() => {
-                            let dataPost = {
+                            let dataPostToGetDetail = {
                               adult: penumpang.adult,
                               child: penumpang.child,
                               infant: penumpang.infant,
                               flight_id: data.id,
                               seat_class,
                             };
-                            // console.log(seat_class)
+                            console.log(seat_class);
                             axios
                               .post(
                                 "https://tiketku-development.up.railway.app/flight/detail",
-                                dataPost
+                                dataPostToGetDetail
                               )
                               .then((response) => {
                                 const dataCheckout = {
                                   dataPost: response.data.data,
                                   flight_id: data.id,
                                 };
-
                                 // Handle Successful --
                                 // console.log(response.data)
+                                // nav("/checkout", { state: response.data.data });
                                 nav("/checkout", { state: dataCheckout });
                               })
                               .catch((error) => {
                                 // Handle Error
                                 // nav("/search_result", { state: [] });
+
                                 console.log(error, "erorku");
                               });
                           }}
