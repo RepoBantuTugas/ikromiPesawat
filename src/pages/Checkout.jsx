@@ -23,7 +23,7 @@ const Checkout = () => {
   const elementKid = [];
   const elementinfant = [];
   // const [name, setName] = useState();
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
   // useEffect(() => {
   //   console.log(orderId);
   // }, [orderId]);
@@ -317,14 +317,14 @@ const Checkout = () => {
       </div>
     );
   }
-
+  const nav = useNavigate();
   const [data, setData] = useState([]);
   const [datakid, setDatakid] = useState([]);
   const [datainf, setDatainf] = useState([]);
-  
-  const [handleSimpan,sethandleSimpan] = useState(false);
-  const [handleBayar,sethandleBayar] = useState(true);
-  function handleCreateOrder(){
+
+  const [handleSimpan, sethandleSimpan] = useState(false);
+  const [handleBayar, sethandleBayar] = useState(true);
+  function handleCreateOrder() {
     function addObjectIfFromArray(masterArray, objectArray) {
       if (objectArray.length !== 0) {
         for (let i = 0; i < objectArray.length; i++) {
@@ -355,7 +355,7 @@ const Checkout = () => {
         // console.log(response.data);
         // setOrderId(response.data.data.id)
         // console.log(orderId)
-        nav('/payment',{ state: response.data.data.id })
+        nav("/payment", { state: response.data.data.id });
 
         // nav to ....
       })
@@ -363,13 +363,12 @@ const Checkout = () => {
         console.error(error);
       });
   }
+
+  // disable button pay
   function handleSaveData(e) {
     e.preventDefault();
-    // console.log("halo")
-    // console.log(dataPost)
-    sethandleSimpan(true)
-    sethandleBayar(false)
-    
+    sethandleSimpan(true);
+    sethandleBayar(false);
     // console.log(order)
   }
 
@@ -488,30 +487,6 @@ const Checkout = () => {
     setDatainf(updatedMaster);
   }
 
-  // Passing Data Payment
-  const nav = useNavigate();
-
-  // const handlePayButton = (e) => {
-  //   e.preventDefault();
-  //   console.log(dataPost, "data kee payment");
-  //   axios
-  //     .get(
-  //       `https://tiketku-development.up.railway.app/order/{order_id}`,
-  //       dataPost,
-  //       {
-  //         headers: {
-  //           Authorization: localStorage.getItem("token"),
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       nav("/payment", { state: dataPost });
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
   return (
     <>
       <Container className="bg warning mt-5">
@@ -527,9 +502,7 @@ const Checkout = () => {
                 </Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item active>
-                <Link
-                  style={{ textDecoration: "none", color: "#7126B5" }}
-                >
+                <Link style={{ textDecoration: "none", color: "#7126B5" }}>
                   Bayar
                 </Link>
               </Breadcrumb.Item>
@@ -566,7 +539,11 @@ const Checkout = () => {
                   {elementAdult}
                   {elementKid}
                   {elementinfant}
-                  <Button disabled={handleSimpan} type="submit" className="w-100 my-3 button-save">
+                  <Button
+                    disabled={handleSimpan}
+                    type="submit"
+                    className="w-100 my-3 button-save"
+                  >
                     Simpan
                   </Button>
                 </form>
@@ -651,9 +628,13 @@ const Checkout = () => {
               </h5>
             </div>
             <br />
-              <Button disabled={handleBayar} onClick={handleCreateOrder} variant="danger">
-                Lanjut Bayar
-              </Button>
+            <Button
+              disabled={handleBayar}
+              onClick={handleCreateOrder}
+              variant="danger"
+            >
+              Lanjut Bayar
+            </Button>
           </Col>
         </Row>
       </Container>
