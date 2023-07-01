@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 // import Matahari from "../styles/images/Matahari.png";
 import Payment from "../styles/images/Payment.png";
 import "../styles/Payment.css";
@@ -22,6 +22,8 @@ const PaymentPage = () => {
   const loc = useLocation();
   const id = loc.state;
   const [data, setData] = useState();
+  const { idUnpaid } = useParams();
+
   useEffect(() => {
     axios
       .get(`https://tiketku-development.up.railway.app/order/${id}`, {
@@ -64,6 +66,27 @@ const PaymentPage = () => {
       });
     setShow(true);
   };
+
+  const [dataUnpaid, setDataUnpaid] = useState();
+  const getDataUnpaid = (id) => {
+    axios
+      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setDataUnpaid(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getDataUnpaid(idUnpaid);
+  }, []);
 
   return (
     <>
@@ -147,106 +170,213 @@ const PaymentPage = () => {
                   Bayar
                 </Button>
               </Col>
-              <Col className="mb-5">
-                <div className="mt-3">
-                  <h5 className="fw-bold" style={{ color: "#7126B5" }}>
-                    Booking Code: {data?.booking_code}
-                  </h5>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="fw-bold">
-                      {data?.flight_detail.departure.time}
+              {idUnpaid === undefined ? (
+                <Col className="mb-5">
+                  <div className="mt-3">
+                    <h5 className="fw-bold" style={{ color: "#7126B5" }}>
+                      Booking Code: {data?.booking_code}
                     </h5>
-                    <h6 className="fw-bold" style={{ color: "#7126B5" }}>
-                      Keberangkatan
-                    </h6>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="fw-bold">
+                        {data?.flight_detail.departure.time}
+                      </h5>
+                      <h6 className="fw-bold" style={{ color: "#7126B5" }}>
+                        Keberangkatan
+                      </h6>
+                    </div>
+                    <p className="mb-0">{data?.flight_detail.departure.date}</p>
+                    <p>
+                      {data?.flight_detail.departure.airport_name} -
+                      {data?.flight_detail.departure.city}
+                    </p>
                   </div>
-                  <p className="mb-0">{data?.flight_detail.departure.date}</p>
-                  <p>
-                    {data?.flight_detail.departure.airport_name} -
-                    {data?.flight_detail.departure.city}
-                  </p>
-                </div>
 
-                <hr />
+                  <hr />
 
-                <Row>
-                  <Col md={1}>{/* <img src={Matahari} alt="" /> */}</Col>
-                  <Col md="auto">
-                    <h6 className="fw-bold">
-                      {data?.flight_detail.airplane.airline} -{" "}
-                      {data?.flight_detail.airplane.seat_class}
-                    </h6>
-                    <h6 className="fw-bold mb-4">
-                      {" "}
-                      {data?.flight_detail.airplane.flight_number}
-                    </h6>
-                    <h6 className="fw-bold">Informasi:</h6>
-                    <h6 className="fw-bold">
-                      <img
-                        src={data?.flight_detail.airplane.logo}
-                        alt="logo_airplane"
-                        className="logo_airplane"
-                      />
-                    </h6>
-                    <p className="mb-0">
-                      Baggage {data?.flight_detail.airplane.baggage} kg
+                  <Row>
+                    <Col md={1}>{/* <img src={Matahari} alt="" /> */}</Col>
+                    <Col md="auto">
+                      <h6 className="fw-bold">
+                        {data?.flight_detail.airplane.airline} -{" "}
+                        {data?.flight_detail.airplane.seat_class}
+                      </h6>
+                      <h6 className="fw-bold mb-4">
+                        {" "}
+                        {data?.flight_detail.airplane.flight_number}
+                      </h6>
+                      <h6 className="fw-bold">Informasi:</h6>
+                      <h6 className="fw-bold">
+                        <img
+                          src={data?.flight_detail.airplane.logo}
+                          alt="logo_airplane"
+                          className="logo_airplane"
+                        />
+                      </h6>
+                      <p className="mb-0">
+                        Baggage {data?.flight_detail.airplane.baggage} kg
+                      </p>
+                      <p className="mb-0">
+                        Cabin baggage{" "}
+                        {data?.flight_detail.airplane.cabin_baggage} kg
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <hr />
+
+                  <div className="div">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="fw-bold">
+                        {data?.flight_detail.arrival.time}
+                      </h5>
+                      <h6 className="fw-bold" style={{ color: "#7126B5" }}>
+                        Kedatangan
+                      </h6>
+                    </div>
+                    <p className="mb-0">{data?.flight_detail.arrival.date}</p>
+                    <p className="fw-bold">
+                      {data?.flight_detail.arrival.airport_name} -{" "}
+                      {data?.flight_detail.arrival.city}
                     </p>
-                    <p className="mb-0">
-                      Cabin baggage {data?.flight_detail.airplane.cabin_baggage}{" "}
-                      kg
-                    </p>
-                  </Col>
-                </Row>
+                  </div>
 
-                <hr />
+                  <hr />
 
-                <div className="div">
+                  <div>
+                    <h5 className="fw-bold">Rincian Harga</h5>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{data?.price_detail.adult_count} Adults</p>
+                      <p>{data?.price_detail.adult_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{data?.price_detail.child_count} Child</p>
+                      <p>{data?.price_detail.child_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{data?.price_detail.infant_count} Baby</p>
+                      <p>{data?.price_detail.infant_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>Tax</p>
+                      <p>{data?.price_detail.tax}</p>
+                    </div>
+                  </div>
+
+                  <hr />
+
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="fw-bold">
-                      {data?.flight_detail.arrival.time}
+                    <h5 className="fw-bold">Total</h5>
+                    <h5 className="fw-bold" style={{ color: "#7126B5" }}>
+                      {data?.price_detail.total_price}
                     </h5>
-                    <h6 className="fw-bold" style={{ color: "#7126B5" }}>
-                      Kedatangan
-                    </h6>
                   </div>
-                  <p className="mb-0">{data?.flight_detail.arrival.date}</p>
-                  <p className="fw-bold">
-                    {data?.flight_detail.arrival.airport_name} -{" "}
-                    {data?.flight_detail.arrival.city}
-                  </p>
-                </div>
+                </Col>
+              ) : (
+                <Col className="mb-5">
+                  <div className="mt-3">
+                    <h5 className="fw-bold" style={{ color: "#7126B5" }}>
+                      Booking Code: {dataUnpaid?.booking_code}
+                    </h5>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="fw-bold">
+                        {dataUnpaid?.flight_detail.departure.time}
+                      </h5>
+                      <h6 className="fw-bold" style={{ color: "#7126B5" }}>
+                        Keberangkatan
+                      </h6>
+                    </div>
+                    <p className="mb-0">
+                      {dataUnpaid?.flight_detail.departure.date}
+                    </p>
+                    <p>
+                      {dataUnpaid?.flight_detail.departure.airport_name} -{" "}
+                      {dataUnpaid?.flight_detail.departure.city}
+                    </p>
+                  </div>
 
-                <hr />
+                  <hr />
 
-                <div>
-                  <h5 className="fw-bold">Rincian Harga</h5>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <p>{data?.price_detail.adult_count} Adults</p>
-                    <p>{data?.price_detail.adult_price}</p>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <p>{data?.price_detail.child_count} Child</p>
-                    <p>{data?.price_detail.child_price}</p>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <p>{data?.price_detail.infant_count} Baby</p>
-                    <p>{data?.price_detail.infant_price}</p>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <p>Tax</p>
-                    <p>{data?.price_detail.tax}</p>
-                  </div>
-                </div>
+                  <Row>
+                    <Col md={1}>{/* <img src={Matahari} alt="" /> */}</Col>
+                    <Col md="auto">
+                      <h6 className="fw-bold">
+                        {dataUnpaid?.flight_detail.airplane.airline} -{" "}
+                        {dataUnpaid?.flight_detail.airplane.seat_class}
+                      </h6>
+                      <h6 className="fw-bold mb-4">
+                        {" "}
+                        {dataUnpaid?.flight_detail.airplane.flight_number}
+                      </h6>
+                      <h6 className="fw-bold">Informasi:</h6>
+                      <h6 className="fw-bold">
+                        <img
+                          src={dataUnpaid?.flight_detail.airplane.logo}
+                          alt="logo_airplane"
+                          className="logo_airplane"
+                        />
+                      </h6>
+                      <p className="mb-0">
+                        Baggage {dataUnpaid?.flight_detail.airplane.baggage} kg
+                      </p>
+                      <p className="mb-0">
+                        Cabin baggage{" "}
+                        {dataUnpaid?.flight_detail.airplane.cabin_baggage} kg
+                      </p>
+                    </Col>
+                  </Row>
 
-                <hr />
+                  <hr />
 
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="fw-bold">Total</h5>
-                  <h5 className="fw-bold" style={{ color: "#7126B5" }}>
-                    {data?.price_detail.total_price}
-                  </h5>
-                </div>
-              </Col>
+                  <div className="div">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="fw-bold">
+                        {dataUnpaid?.flight_detail.arrival.time}
+                      </h5>
+                      <h6 className="fw-bold" style={{ color: "#7126B5" }}>
+                        Kedatangan
+                      </h6>
+                    </div>
+                    <p className="mb-0">
+                      {dataUnpaid?.flight_detail.arrival.date}
+                    </p>
+                    <p className="fw-bold">
+                      {dataUnpaid?.flight_detail.arrival.airport_name} -{" "}
+                      {dataUnpaid?.flight_detail.arrival.city}
+                    </p>
+                  </div>
+
+                  <hr />
+
+                  <div>
+                    <h5 className="fw-bold">Rincian Harga</h5>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{dataUnpaid?.price_detail.adult_count} Adults</p>
+                      <p>{dataUnpaid?.price_detail.adult_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{dataUnpaid?.price_detail.child_count} Child</p>
+                      <p>{dataUnpaid?.price_detail.child_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>{dataUnpaid?.price_detail.infant_count} Baby</p>
+                      <p>{dataUnpaid?.price_detail.infant_price}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <p>Tax</p>
+                      <p>{dataUnpaid?.price_detail.tax}</p>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="fw-bold">Total</h5>
+                    <h5 className="fw-bold" style={{ color: "#7126B5" }}>
+                      {dataUnpaid?.price_detail.total_price}
+                    </h5>
+                  </div>
+                </Col>
+              )}
             </Row>
           </Container>
         </React.Fragment>

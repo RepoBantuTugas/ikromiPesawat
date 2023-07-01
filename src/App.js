@@ -15,6 +15,7 @@ import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
 // import DetailPesanan from "./components/Detailpesanan";
 import PaymentSuccess from "./components/Paymentsucces";
+import Notifikasi from "./pages/Notifikasi";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -61,6 +62,7 @@ function App() {
           {/* Checkout */}
           {/* <Route path="/checkout" element={<Checkout />} /> */}
           <Route path="/payment" element={<Payment />} />
+          <Route path="/payment/:idUnpaid" element={<Payment />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/history" element={<RiwayatPemesanan />} />
           <Route path="/notifikasi" element={<Notifikasi />} />

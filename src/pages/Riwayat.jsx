@@ -9,7 +9,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { BsArrowLeftShort, BsFunnel, BsSearch } from "react-icons/bs";
-import DetailPesanan from "../components/DetailPesanan";
+import DetailPesanan from "../components/Detailpesanan";
 import "../styles/history.css";
 import HeaderLogin from "../components/HeaderLogin";
 import { Link } from "react-router-dom";
@@ -243,6 +243,7 @@ const History = () => {
                   ? "warning"
                   : "danger"
               }
+              to={dataById.status === "UNPAID" ? `/payment/${id}` : null}
             >
               {dataById.status === "PAID"
                 ? "CETAK TIKET"
