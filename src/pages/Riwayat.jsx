@@ -57,7 +57,7 @@ const History = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setDataById(response.data.data);
       })
       .catch((error) => {
@@ -72,6 +72,7 @@ const History = () => {
   useEffect(() => {
     getDataDetail(id);
   }, [id]);
+  // 
   return (
     <>
       <HeaderLogin />
@@ -119,6 +120,7 @@ const History = () => {
                   variant={dataById.status === "PAID" ? "success" : "danger"}
                 >
                   {dataById.status}
+    
                 </Button>
               </div>
               <h6>
@@ -139,14 +141,21 @@ const History = () => {
                 <h6 className="fw-bold">Jet Air - Economy</h6>
                 <h6 className="fw-bold mb-4">JT - 203</h6>
                 <h6 className="fw-bold">Informasi:</h6>
-                <p className="mb-0 fw-medium info">
+                {dataById.booking_code === undefined ? console.log("kosong"):((dataById.flight_detail.passengers).map((item,index)=>(
+                  <><p className="mb-0 fw-medium info">
+                  Penumpang {index+1}: {item.fullname}
+                </p>
+                <p>ID: {item.ktp} </p></>
+                )))}
+                {/* {dataById === undefined  ? (<></>):(
+                  (dataById.flight_detail).map((item)=>(
+                    <><h1>halo</h1></>
+                  ))
+                )} */}
+                {/* <p className="mb-0 fw-medium info">
                   Penumpang 1: Mr. Harry Potter
                 </p>
-                <p>ID: 1234567</p>
-                <p className="mb-0 fw-medium info">
-                  Penumpang 1: Miss Hermione
-                </p>
-                <p>ID: 789658</p>
+                <p>ID: 1234567</p> */}
               </Col>
             </Col>
 
