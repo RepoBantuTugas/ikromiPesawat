@@ -73,13 +73,13 @@ const DetailPesanan = ({ data, handleId }) => {
                 <Card.Text className="d-flex align-items-center justify-content-between">
                   <div>
                     <h6 className="fw-bold">Booking Code:</h6>
-                    <p>6723y2GHK</p>
+                    <p>{item?.booking_code}</p>
                   </div>
                   <div>
                     <h6 className="fw-bold">Class:</h6>
                     <p>{item.seat_class}</p>
                   </div>
-                  <h6 className="fw-bold price">IDR {item.price}</h6>
+                  <h6 className="fw-bold price">{item.price}</h6>
                 </Card.Text>
               </Card.Body>
             </Card>

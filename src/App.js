@@ -62,6 +62,8 @@ function App() {
           {/* <Route path="/checkout" element={<Checkout />} /> */}
           <Route path="/payment" element={<Payment />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+          <Route path="/history" element={<RiwayatPemesanan />} />
+          <Route path="/notifikasi" element={<Notifikasi />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -9,7 +9,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { BsArrowLeftShort, BsFunnel, BsSearch } from "react-icons/bs";
-import DetailPesanan from "../components/Detailpesanan";
+import DetailPesanan from "../components/DetailPesanan";
 import "../styles/history.css";
 import HeaderLogin from "../components/HeaderLogin";
 import { Link } from "react-router-dom";
@@ -57,13 +57,15 @@ const History = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data.data);
+        console.log(response.data.data);
         setDataById(response.data.data);
       })
       .catch((error) => {
         console.error(error);
       });
   };
+
+  console.log(dataById?.flight_detail?.passengers, "data passenger");
 
   useEffect(() => {
     getData();
@@ -72,7 +74,24 @@ const History = () => {
   useEffect(() => {
     getDataDetail(id);
   }, [id]);
-  // 
+
+  // const elementPassenger = [];
+  // for (let i = 1; i <= dataById?.flight_detail?.passengers.length; i++) {
+  //   elementPassenger.push(
+  //     <p className="mb-0 fw-medium info">
+  //       <p>Penumpang {i}:</p>
+  //       <p>
+  //         {dataById?.flight_detail?.passengers?.map((item) => item.title)}{" "}
+  //         {dataById?.flight_detail?.passengers?.map((item) => item.fullname)}
+  //       </p>
+
+  //       <p>
+  //         KTP : {dataById?.flight_detail?.passengers?.map((item) => item.ktp)}
+  //       </p>
+  //     </p>
+  //   );
+  // }
+
   return (
     <>
       <HeaderLogin />
@@ -117,10 +136,15 @@ const History = () => {
               <div className="issued d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold">Detail Pesanan</h5>
                 <Button
-                  variant={dataById.status === "PAID" ? "success" : "danger"}
+                  variant={
+                    dataById.status === "PAID"
+                      ? "success"
+                      : dataById.status === "UNPAID"
+                      ? "warning"
+                      : "danger"
+                  }
                 >
                   {dataById.status}
-    
                 </Button>
               </div>
               <h6>
@@ -128,34 +152,39 @@ const History = () => {
                 <b className="total-color"> {dataById.booking_code}</b>{" "}
               </h6>
               <div className="d-flex justify-content-between align-items-center">
-                <h6 className="fw-bold">19:10</h6>
+                <h6 className="fw-bold">
+                  {dataById?.flight_detail?.departure?.time}
+                </h6>
                 <h6 className="text-color">Keberangkatan</h6>
               </div>
-              <p className="mb-0">5 Maret 2023</p>
-              <p>Soekarno Hatta - Terminal 1A Domestik</p>
+              <p className="mb-0">{dataById?.flight_detail?.departure?.date}</p>
+              <p>
+                {dataById?.flight_detail?.departure?.airport_name} -{" "}
+                {dataById?.flight_detail?.departure?.city}
+              </p>
             </div>
 
             <hr />
             <Col xs={1} className="d-flex align-items-center">
               <Col md="auto">
-                <h6 className="fw-bold">Jet Air - Economy</h6>
-                <h6 className="fw-bold mb-4">JT - 203</h6>
+                <h6 className="fw-bold">
+                  {dataById?.flight_detail?.airplane?.airline} -{" "}
+                  {dataById?.flight_detail?.airplane?.seat_class}
+                </h6>
+                <h6 className="fw-bold mb-4">
+                  {dataById?.flight_detail?.airplane?.flight_number}
+                </h6>
                 <h6 className="fw-bold">Informasi:</h6>
-                {dataById.booking_code === undefined ? console.log("kosong"):((dataById.flight_detail.passengers).map((item,index)=>(
-                  <><p className="mb-0 fw-medium info">
-                  Penumpang {index+1}: {item.fullname}
-                </p>
-                <p>ID: {item.ktp} </p></>
-                )))}
-                {/* {dataById === undefined  ? (<></>):(
-                  (dataById.flight_detail).map((item)=>(
-                    <><h1>halo</h1></>
-                  ))
-                )} */}
-                {/* <p className="mb-0 fw-medium info">
-                  Penumpang 1: Mr. Harry Potter
-                </p>
-                <p>ID: 1234567</p> */}
+                {dataById.booking_code === undefined
+                  ? console.log("kosong")
+                  : dataById.flight_detail.passengers.map((item, index) => (
+                      <>
+                        <p className="mb-0 fw-medium info">
+                          Penumpang {index + 1}: {item.fullname}
+                        </p>
+                        <p>ID: {item.ktp} </p>
+                      </>
+                    ))}
               </Col>
             </Col>
 
@@ -163,11 +192,14 @@ const History = () => {
 
             <div className="div">
               <div className="d-flex justify-content-between align-items-center">
-                <h6>21:10</h6>
+                <h6>{dataById?.flight_detail?.arrival?.time}</h6>
                 <h6 className="text-color">Kedatangan</h6>
               </div>
-              <p className="mb-0">5 Maret 2023</p>
-              <p className="fw-bold">Melbourne International Airport</p>
+              <p className="mb-0">{dataById?.flight_detail?.arrival?.date}</p>
+              <p className="fw-bold">
+                {dataById?.flight_detail?.arrival?.airport_name} -{" "}
+                {dataById?.flight_detail?.arrival?.city}
+              </p>
             </div>
 
             <hr />
@@ -175,16 +207,20 @@ const History = () => {
             <div>
               <h5 className="fw-bold">Rincian Harga</h5>
               <div className="d-flex justify-content-between align-items-center mb-0">
-                <p>IDR 9.550.000</p>
-                <p>2 Adults</p>
+                <p>{dataById?.price_detail?.adult_count} Adults</p>
+                <p>{dataById?.price_detail?.adult_price}</p>
               </div>
               <div className="d-flex justify-content-between align-items-center mb-0">
-                <p>1 Baby</p>
-                <p>IDR 0</p>
+                <p>{dataById?.price_detail?.child_count} Child</p>
+                <p>{dataById?.price_detail?.child_price}</p>
+              </div>
+              <div className="d-flex justify-content-between align-items-center mb-0">
+                <p>{dataById?.price_detail?.infant_count} Baby</p>
+                <p>{dataById?.price_detail?.infant_price}</p>
               </div>
               <div className="d-flex justify-content-between align-items-center">
-                <p>Tax</p>
-                <p>IDR 300.000</p>
+                <p>Tax </p>
+                <p>{dataById?.price_detail?.tax}</p>
               </div>
             </div>
 
@@ -192,16 +228,27 @@ const History = () => {
 
             <div className="d-flex justify-content-between align-items-center">
               <h5>Total</h5>
-              <h4 className="total-color">IDR 9.850.000</h4>
+              <h4 className="total-color">
+                {dataById?.price_detail?.total_price}
+              </h4>
             </div>
 
             <Button
               as={Link}
-              to={"/ticket"}
-              type="submit"
               className="my-4 w-100"
+              variant={
+                dataById.status === "PAID"
+                  ? "success"
+                  : dataById.status === "UNPAID"
+                  ? "warning"
+                  : "danger"
+              }
             >
-              Cetak Tiket
+              {dataById.status === "PAID"
+                ? "CETAK TIKET"
+                : dataById.status === "UNPAID"
+                ? "LANJUT BAYAR"
+                : "TIKET DIBATALKAN"}
             </Button>
           </Col>
         </Row>
