@@ -39,27 +39,30 @@ const Notifikasi = () => {
     setShowSearchModal(false);
   };
 
-  const [dataNotif, setDataNotif] = useState();
+  const [dataNotif, setDataNotif] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`https://tiketku-development.up.railway.app/notif`, {
+      .get(`https://tiketku-production.up.railway.app/notif`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
       .then((response) => {
         setDataNotif(response.data.data);
-        console.log(response.data.data, "notif");
+        console.log(response.data.data, "notifffff");
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
+  console.log(dataNotif, "datanotif");
+
   return (
     <>
       <HeaderLogin />
+
       <Container className="h-100 mt-5">
         <Row>
           <Col>
@@ -100,20 +103,20 @@ const Notifikasi = () => {
             </div>
           </Col>
           <Col xs={8}>
-            <p style={styles.txtMute}>
-              {dataNotif?.title}
-              <br />
-              <span style={styles.txtDark} className="fw-bold fs-6">
-                {dataNotif?.description}
-              </span>
-              <br />
-              <span style={styles.txtDark} className="fw-semibold">
-                Notification Body
-              </span>
-            </p>
+            {dataNotif.map((data) => (
+              <p style={styles.txtMute}>
+                {data?.title}
+                <br />
+                <span style={styles.txtDark} className="fw-bold fs-6">
+                  {data?.description}
+                </span>
+                <hr style={styles.customHr} />
+                <br />
+              </p>
+            ))}
           </Col>
           <Col xs={2}>
-            <p style={styles.txtMute}>Formatted Datesdsdsd</p>
+            <p style={styles.txtMute}></p>
           </Col>
         </Row>
         <hr style={styles.customHr} />

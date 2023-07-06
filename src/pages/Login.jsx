@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import GoogleLogin from "../components/GoogleLogin";
 
 const Login = (props) => {
   const nav = useNavigate();
@@ -21,7 +22,7 @@ const Login = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://tiketku-development.up.railway.app/auth/login", user)
+      .post("https://tiketku-production.up.railway.app/auth/login", user)
       .then((response) => {
         // Handle successful registration
         console.log(response.data);
@@ -92,6 +93,11 @@ const Login = (props) => {
                   </Link>
                 </Form.Text>
               </div>
+              <Row>
+                <Col className="text-center">
+                  <GoogleLogin buttonText="Login with Google 🚀" />
+                </Col>
+              </Row>
             </Form>
           </div>
         </Col>

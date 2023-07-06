@@ -233,7 +233,7 @@ function SearchResult(props) {
                             console.log(seat_class);
                             axios
                               .post(
-                                "https://tiketku-development.up.railway.app/flight/detail",
+                                "https://tiketku-production.up.railway.app/flight/detail",
                                 dataPostToGetDetail
                               )
                               .then((response) => {

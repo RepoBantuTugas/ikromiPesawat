@@ -71,7 +71,7 @@ function Home(props) {
 
   useEffect(() => {
     axios
-      .get("https://tiketku-development.up.railway.app/user/getDetail", {
+      .get("https://tiketku-production.up.railway.app/user/getDetail", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -91,7 +91,7 @@ function Home(props) {
 
   useEffect(() => {
     axios
-      .get("https://tiketku-development.up.railway.app/airport")
+      .get("https://tiketku-production.up.railway.app/airport")
       .then((response) => {
         setAirport(response.data.data);
       })
@@ -164,38 +164,16 @@ function Home(props) {
     setSelectedValueCityTo(value);
   };
 
-  let dataPenumpang = {
+  // Checkout
+  // Untuk Menampung Data yg diinputkan dari Home
+  let dataPenumpangFromHome = {
     adult: adults,
     child: kids,
     infant: infants,
   };
- 
-  const handleSearchFlight = (e) => {
-    console.log(dataPost, "Dataposttt");
-    e.preventDefault();
-    axios
-      .post(
-        "https://tiketku-development.up.railway.app/flight/search",
-        dataPost
-      )
-      .then((response) => {
-        let dataFlight = {
-          data : response.data.data.flights,
-          penumpang : dataPenumpang,
-          seat_class: selectedValue,
 
-        };
-        // Handle Successful --
-        nav("/search_result", { state: dataFlight });
-      })
-      .catch((error) => {
-        // Handle Error
-        // nav("/search_result", { state: [] });
-        console.log(error, "erorku");
-      });
-  };
-
-  let dataPost = {
+  // Untuk Menampung Data dari search result ke checkout
+  let dataPostToCheckout = {
     date: datedep,
     adult: adults,
     child: kids,
@@ -205,7 +183,32 @@ function Home(props) {
     departure_airport_city: selectedValueCityFrom,
   };
 
-  console.log(dataPost, "Dataposttt2");
+  const handleSearchFlight = (e) => {
+    console.log(dataPostToCheckout, "Dataposttt");
+    e.preventDefault();
+    axios
+      .post(
+        "https://tiketku-production.up.railway.app/flight/search",
+        dataPostToCheckout
+      )
+      .then((response) => {
+        // Untuk menampung data yang akan diberikan ke pages search result, (temporary)
+        let dataFlightToSearchResult = {
+          data: response.data.data.flights,
+          penumpang: dataPenumpangFromHome,
+          seat_class: selectedValue,
+        };
+        // Handle Successful --
+        nav("/search_result", { state: dataFlightToSearchResult });
+      })
+      .catch((error) => {
+        // Handle Error
+        // nav("/search_result", { state: [] });
+        console.log(error, "erorku");
+      });
+  };
+
+  console.log(dataPostToCheckout, "Dataposttt2");
 
   // Last Line Search Flight
 
@@ -213,7 +216,7 @@ function Home(props) {
   const [favDestination, setFavDestination] = useState([]);
   useEffect(() => {
     axios
-      .get("https://tiketku-development.up.railway.app/airport/favorite")
+      .get("https://tiketku-production.up.railway.app/airport/favorite")
       .then((response) => {
         setFavDestination(response.data.data);
       })
@@ -564,16 +567,17 @@ function Home(props) {
             {/* First Line Kategori Destinasi */}
 
             <div className="kategori">
-              <Button className="button_kategori">
-                <img
-                  className="icon_masuk"
-                  src={search_logo}
-                  alt="Icon Search"
-                />
-                {favDestination.map((item) => (
+              {favDestination.map((item) => (
+                <Button className="button_kategori">
+                  <img
+                    className="icon_masuk"
+                    src={search_logo}
+                    alt="Icon Search"
+                  />
+
                   <p className="text-masuk">{item.city}</p>
-                ))}
-              </Button>
+                </Button>
+              ))}
 
               {/* <Button className="button_kategori">
                 <img

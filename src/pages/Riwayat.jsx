@@ -9,7 +9,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { BsArrowLeftShort, BsFunnel, BsSearch } from "react-icons/bs";
-import DetailPesanan from "../components/Detailpesanan";
+import DetailPesanan from "../components/DetailPesanan";
 import "../styles/history.css";
 import HeaderLogin from "../components/HeaderLogin";
 import { Link } from "react-router-dom";
@@ -35,7 +35,7 @@ const History = () => {
 
   const getData = () => {
     axios
-      .get(`https://tiketku-development.up.railway.app/order`, {
+      .get(`https://tiketku-production.up.railway.app/order`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -51,13 +51,13 @@ const History = () => {
 
   const getDataDetail = (id) => {
     axios
-      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+      .get(`https://tiketku-production.up.railway.app/order/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
       .then((response) => {
-        console.log(response.data.data);
+        console.log(response.data.data, "datapaid");
         setDataById(response.data.data);
       })
       .catch((error) => {
@@ -74,23 +74,6 @@ const History = () => {
   useEffect(() => {
     getDataDetail(id);
   }, [id]);
-
-  // const elementPassenger = [];
-  // for (let i = 1; i <= dataById?.flight_detail?.passengers.length; i++) {
-  //   elementPassenger.push(
-  //     <p className="mb-0 fw-medium info">
-  //       <p>Penumpang {i}:</p>
-  //       <p>
-  //         {dataById?.flight_detail?.passengers?.map((item) => item.title)}{" "}
-  //         {dataById?.flight_detail?.passengers?.map((item) => item.fullname)}
-  //       </p>
-
-  //       <p>
-  //         KTP : {dataById?.flight_detail?.passengers?.map((item) => item.ktp)}
-  //       </p>
-  //     </p>
-  //   );
-  // }
 
   return (
     <>

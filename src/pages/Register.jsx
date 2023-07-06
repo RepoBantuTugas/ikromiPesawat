@@ -4,6 +4,7 @@ import logo from "../styles/images/logo.png";
 import "../styles/register.css";
 import React, { useState } from "react";
 import axios from "axios";
+import GoogleLogin from "../components/GoogleLogin";
 
 const Register = () => {
   const nav = useNavigate();
@@ -31,7 +32,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://tiketku-development.up.railway.app/auth/register", user)
+      .post("https://tiketku-production.up.railway.app/auth/register", user)
       .then((response) => {
         const data = {
           email,
@@ -119,6 +120,11 @@ const Register = () => {
                   Masuk di sini
                 </Link>
               </div>
+              <Row>
+                <Col className="text-center">
+                  <GoogleLogin buttonText="Register with Google 🚀" />
+                </Col>
+              </Row>
             </Form>
           </div>
         </Col>

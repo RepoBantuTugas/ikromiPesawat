@@ -28,6 +28,22 @@ const Checkout = () => {
   //   console.log(orderId);
   // }, [orderId]);
   const [showInput, setShowInput] = useState(false);
+  const [country, setCountry] = useState();
+  useEffect(() => {
+    axios
+      .get(`https://tiketku-production.up.railway.app/country/`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setCountry(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const toggleInput = () => {
     setShowInput(!showInput);
@@ -118,7 +134,7 @@ const Checkout = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3">
+              {/* <Form.Group className="mb-3">
                 <Form.Label className="fw-bold" style={{ color: "#7126b5" }}>
                   Negara Penerbit
                 </Form.Label>
@@ -130,7 +146,7 @@ const Checkout = () => {
                   Berlaku Sampai
                 </Form.Label>
                 <Form.Control type="date" />
-              </Form.Group>
+              </Form.Group> */}
             </Form>
           </Card.Body>
         </Card>
@@ -346,7 +362,7 @@ const Checkout = () => {
       seat_class: dataPost.info.seat_class,
     };
     axios
-      .post("https://tiketku-development.up.railway.app/order", order, {
+      .post("https://tiketku-production.up.railway.app/order", order, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -363,12 +379,11 @@ const Checkout = () => {
         console.error(error);
       });
   }
-
-  // disable button pay
   function handleSaveData(e) {
     e.preventDefault();
     sethandleSimpan(true);
     sethandleBayar(false);
+
     // console.log(order)
   }
 
@@ -603,19 +618,19 @@ const Checkout = () => {
               <h5 className="fw-bold">Rincian Harga</h5>
               <div className="d-flex justify-content-between align-items-center">
                 <p>{dataPost.price.adult_count} Adults</p>
-                <p>IDR {dataPost.price.adult_price}</p>
+                <p>{dataPost.price.adult_price}</p>
               </div>
               <div className="d-flex justify-content-between align-items-center">
-                <p>{dataPost.price.child_count} Baby</p>
-                <p>IDR {dataPost.price.child_price}</p>
+                <p>{dataPost.price.child_count} Child</p>
+                <p>{dataPost.price.child_price}</p>
               </div>
               <div className="d-flex justify-content-between align-items-center">
                 <p>{dataPost.price.infant_count} Baby</p>
-                <p>IDR {dataPost.price.infant_price}</p>
+                <p>{dataPost.price.infant_price}</p>
               </div>
               <div className="d-flex justify-content-between align-items-center">
                 <p>Tax</p>
-                <p>IDR {dataPost.price.tax}</p>
+                <p>{dataPost.price.tax}</p>
               </div>
             </div>
 
@@ -624,7 +639,7 @@ const Checkout = () => {
             <div className="d-flex justify-content-between align-items-center">
               <h5 className="fw-bold txt-primary">Total</h5>
               <h5 className="fw-bold" style={{ color: "#7126B5" }}>
-                IDR {dataPost.price.total_price}
+                {dataPost.price.total_price}
               </h5>
             </div>
             <br />

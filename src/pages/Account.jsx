@@ -19,15 +19,13 @@ import { Toast } from "bootstrap";
 
 const notify = () => toast("Wow so easy!");
 
-
-
 const Account = () => {
-  const nav = useNavigate()
-  const handleSignout = () =>{
+  const nav = useNavigate();
+  const handleSignout = () => {
     localStorage.removeItem("token");
     // nav('/')
     window.location.reload();
-  }
+  };
   const linkStyle = {
     color: "var(--primary-color)",
     textDecoration: "none",
@@ -44,7 +42,7 @@ const Account = () => {
   };
   useEffect(() => {
     axios
-      .get("https://tiketku-development.up.railway.app/user/getDetail", {
+      .get("https://tiketku-production.up.railway.app/user/getDetail", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -74,7 +72,7 @@ const Account = () => {
     console.log(user);
     axios
       .put(
-        "https://tiketku-development.up.railway.app/user/updateProfile",
+        "https://tiketku-production.up.railway.app/user/updateProfile",
         user,
         {
           headers: {
@@ -84,20 +82,6 @@ const Account = () => {
       )
       .then((response) => {
         console.log(response.data);
-
-        <Toast>
-          <Toast.Header>
-            <img
-              src="holder.js/20x20?text=%20"
-              className="rounded me-2"
-              alt=""
-            />
-            <strong className="me-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-          </Toast.Header>
-          <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
-        </Toast>;
-
         window.location.reload();
       })
       .catch((error) => {
@@ -141,9 +125,13 @@ const Account = () => {
                   Pengaturan Akun
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item onClick={handleSignout} action className="mt-4 border-bottom pb-3">
-                <Link  style={linkStyle}>
-                  <FiLogOut  className="link-style me-3" />
+              <ListGroup.Item
+                onClick={handleSignout}
+                action
+                className="mt-4 border-bottom pb-3"
+              >
+                <Link style={linkStyle}>
+                  <FiLogOut className="link-style me-3" />
                   Keluar
                 </Link>
               </ListGroup.Item>

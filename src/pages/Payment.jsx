@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import PaymentSuccess from "../../src/components/Paymentsucces";
+import HeaderLogin from "../components/HeaderLogin";
 
 const PaymentPage = () => {
   const loc = useLocation();
@@ -26,7 +27,7 @@ const PaymentPage = () => {
 
   useEffect(() => {
     axios
-      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+      .get(`https://tiketku-production.up.railway.app/order/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -47,9 +48,9 @@ const PaymentPage = () => {
   const handlePayment = () => {
     axios
       .post(
-        `https://tiketku-development.up.railway.app/payment`,
+        `https://tiketku-production.up.railway.app/payment`,
         {
-          order_id: id,
+          order_id: Number(id),
           payment_type: "debit",
         },
         {
@@ -70,13 +71,13 @@ const PaymentPage = () => {
   const [dataUnpaid, setDataUnpaid] = useState();
   const getDataUnpaid = (id) => {
     axios
-      .get(`https://tiketku-development.up.railway.app/order/${id}`, {
+      .get(`https://tiketku-production.up.railway.app/order/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
       .then((response) => {
-        console.log(response.data.data);
+        console.log(response.data.data, "dataUn");
         setDataUnpaid(response.data.data);
       })
       .catch((error) => {
@@ -94,6 +95,7 @@ const PaymentPage = () => {
         <PaymentSuccess />
       ) : (
         <React.Fragment>
+          <HeaderLogin />
           <Container className="mt-5">
             <Row>
               <Col>
